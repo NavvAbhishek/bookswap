@@ -13,10 +13,19 @@ public class MvcConfig implements WebMvcConfigurer {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
+    @Value("${book.photo.upload-dir}")
+    private String bookPhotoUploadDir;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // Handler for profile pictures
         String resourcePath = Paths.get(uploadDir).toAbsolutePath().toString();
         registry.addResourceHandler("/uploads/profile-pics/**")
                 .addResourceLocations("file:/" + resourcePath + "/");
+
+        // Handler for book photos
+        String bookPhotoResourcePath = Paths.get(bookPhotoUploadDir).toAbsolutePath().toString();
+        registry.addResourceHandler("/uploads/book-pics/**")
+                .addResourceLocations("file:/" + bookPhotoResourcePath + "/");
     }
 }

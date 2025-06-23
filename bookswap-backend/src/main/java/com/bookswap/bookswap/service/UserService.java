@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    public UserProfileDTO mapToUserProfileDTO(com.bookswap.bookswap.model.User user) {
+    public UserProfileDTO mapToUserProfileDTO(User user) {
         // Construct the full URL for the profile picture
         String profilePicUrl = user.getProfilePictureUrl() != null
                 ? "http://localhost:8080/uploads/profile-pics/" + user.getProfilePictureUrl()
