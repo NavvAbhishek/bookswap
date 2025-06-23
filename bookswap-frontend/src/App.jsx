@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage"; // <-- Import ProfilePage
 import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardPage from "./pages/DashboardPage";
 
 const App = () => {
   return (
@@ -21,6 +22,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
             </ProtectedRoute>
           }
         />
