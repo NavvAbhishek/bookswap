@@ -22,8 +22,35 @@ const signup = (signUpRequest, profilePicture) => {
     return axios.post(API_URL + "signup", formData);
 };
 
+const login = (email, password) => {
+    return axios
+        .post(API_URL + "login", {
+            email,
+            password,
+        })
+        .then((response) => {
+            // If the response contains a token, store it
+            if (response.data.token) {
+                // Storing the user object (which includes the token and name)
+                localStorage.setItem("user", JSON.stringify(response.data));
+            }
+            return response.data;
+        });
+};
+
+const logout = () => {
+    localStorage.removeItem("user");
+};
+
+const getCurrentUser = () => {
+    return JSON.parse(localStorage.getItem("user"));
+};
+
 const AuthService = {
-    signup,
+   signup,
+    login,
+    logout,
+    getCurrentUser,
 };
 
 export default AuthService;
