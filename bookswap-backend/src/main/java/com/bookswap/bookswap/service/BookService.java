@@ -56,6 +56,21 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
+    // Gets all available books, excluding those owned by the current user.
+    @Transactional(readOnly = true)
+    public List<BookResponseDTO> getExploreBooks(User currentUser) {
+        // We call our new repository method, passing the current user and the desired status
+        List<Book> exploreBooks = bookRepository.findAllByOwnerNotAndStatusOrderByCreatedAtDesc(
+                currentUser,
+                BookStatus.AVAILABLE
+        );
+
+        // We map the results to DTOs, just like we do for the other methods
+        return exploreBooks.stream()
+                .map(this::mapToBookResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public BookResponseDTO updateBook(Long bookId, BookRequestDTO request, MultipartFile photo, User currentUser) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + bookId));

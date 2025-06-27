@@ -57,4 +57,10 @@ public class BookController {
         bookService.deleteBook(bookId, currentUser);
         return ResponseEntity.noContent().build(); // Standard response for successful delete
     }
+
+    @GetMapping("/explore")
+    public ResponseEntity<List<BookResponseDTO>> getExploreBooks(@AuthenticationPrincipal User currentUser) {
+        List<BookResponseDTO> books = bookService.getExploreBooks(currentUser);
+        return ResponseEntity.ok(books);
+    }
 }
