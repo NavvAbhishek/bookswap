@@ -2,7 +2,6 @@ import axios from 'axios';
 import AuthService from './auth.service';
 
 const API_URL = 'http://localhost:8080/api/books';
-const API_URL_GET = 'http://localhost:8080/api/books/';
 
 // Helper function to get the auth header with the JWT
 const authHeader = () => {
@@ -16,7 +15,7 @@ const authHeader = () => {
 
 // GET all books for the currently logged-in user
 const getMyBooks = () => {
-    return axios.get(API_URL_GET + 'my-books', { headers: authHeader() });
+    return axios.get(`${API_URL}/my-books`, { headers: authHeader() });
 };
 
 // POST a new book
