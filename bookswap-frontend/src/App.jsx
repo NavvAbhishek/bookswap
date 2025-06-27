@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage"; // <-- Import ProfilePage
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
+import ExplorePage from "./pages/ExplorePage";
 
 const App = () => {
   return (
@@ -30,6 +31,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/explore"
+          element={
+            <ProtectedRoute>
+              <ExplorePage />
             </ProtectedRoute>
           }
         />
