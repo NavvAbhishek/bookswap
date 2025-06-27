@@ -1,11 +1,11 @@
 package com.bookswap.bookswap.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -13,49 +13,46 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+    // NO @RequiredArgsConstructor
+    // NO 'final' fields injected here via the constructor. This is the key.
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            JwtAuthFilter jwtAuthFilter, // Injected as a method parameter
+            AuthenticationProvider authenticationProvider // Injected as a method parameter
+    ) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                // Tell HttpSecurity to use the CORS configuration defined in the bean below
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/uploads/profile-pics/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/uploads/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Set the authentication provider
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider) // Use the provider from method params
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Use the filter from method params
 
         return http.build();
     }
-    // **CONFIGURE CORS GLOBALLY **
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Set the allowed origin for your React app
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        // Set the allowed methods
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Set the allowed headers
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        // This allows cookies and credentials to be sent
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept"));
+        //configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply this configuration to all routes
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

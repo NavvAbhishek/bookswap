@@ -21,14 +21,17 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // This lambda fetches the user from the database.
         return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        // This is the data access object responsible for fetching user details and encoding passwords.
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -38,10 +41,5 @@ public class ApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

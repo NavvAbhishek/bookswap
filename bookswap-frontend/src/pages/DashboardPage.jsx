@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import BookService from "../services/book.service";
 import {
   PlusIcon,
@@ -252,7 +252,7 @@ const DashboardPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingBookId, setDeletingBookId] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const fetchMyBooks = useCallback(() => {
     setLoading(true);
@@ -262,7 +262,7 @@ const DashboardPage = () => {
         setLoading(false);
       },
       (error) => {
-        setError("Failed to fetch your books.");
+        setError("Failed to fetch your books.",error);
         setLoading(false);
       }
     );

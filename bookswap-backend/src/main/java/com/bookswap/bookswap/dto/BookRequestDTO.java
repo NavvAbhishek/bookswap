@@ -10,9 +10,9 @@ public class BookRequestDTO {
     private String author;
     private String genre;
     private String language;
-    private com.bookswap.bookswap.enums.BookCondition bookCondition;
+    private BookCondition bookCondition;
     private String description;
     private String exchangePreference;
     private String location;
-    private com.bookswap.bookswap.enums.BookStatus status; // For editing
+    private BookStatus status;
 }
