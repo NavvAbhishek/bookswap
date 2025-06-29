@@ -26,4 +26,5 @@ public class BookResponseDTO {
     private String ownerName;
     private LocalDateTime createdAt;
     private String locationName;
+    private Double distanceKm;
 }

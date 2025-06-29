@@ -6,6 +6,7 @@ import com.bookswap.bookswap.enums.BookStatus;
 import com.bookswap.bookswap.model.Book;
 import com.bookswap.bookswap.model.User;
 import com.bookswap.bookswap.repository.BookRepository;
+import com.bookswap.bookswap.util.HaversineUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,13 +49,13 @@ public class BookService {
                 .build();
 
         Book savedBook = bookRepository.save(book);
-        return mapToBookResponseDTO(savedBook);
+        return mapToBookResponseDTO(savedBook, owner);
     }
 
     @Transactional(readOnly = true)
     public List<BookResponseDTO> getBooksForUser(User owner) {
         return bookRepository.findByOwnerOrderByIdDesc(owner).stream()
-                .map(this::mapToBookResponseDTO)
+                .map(book -> mapToBookResponseDTO(book, owner))
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +70,7 @@ public class BookService {
 
         // We map the results to DTOs, just like we do for the other methods
         return exploreBooks.stream()
-                .map(this::mapToBookResponseDTO)
+                .map(book -> mapToBookResponseDTO(book, currentUser))
                 .collect(Collectors.toList());
     }
 
@@ -100,7 +101,7 @@ public class BookService {
         }
 
         Book updatedBook = bookRepository.save(book);
-        return mapToBookResponseDTO(updatedBook);
+        return mapToBookResponseDTO(updatedBook, currentUser);
     }
 
     public void deleteBook(Long bookId, User currentUser) {
@@ -117,12 +118,20 @@ public class BookService {
     }
 
 
-    private BookResponseDTO mapToBookResponseDTO(Book book) {
+    private BookResponseDTO mapToBookResponseDTO(Book book, User currentUser) {
         String photoUrl = book.getPhotoUrl() != null
                 ? "http://localhost:8080/uploads/book-pics/" + book.getPhotoUrl()
                 : null;
 
         String locationName = geocodingService.getCityFromCoordinates(book.getLatitude(), book.getLongitude());
+
+        double distance = 0.0;
+        if (currentUser.getLatitude() != null && currentUser.getLongitude() != null) {
+            distance = HaversineUtil.calculateDistance(
+                    currentUser.getLatitude(), currentUser.getLongitude(),
+                    book.getLatitude(), book.getLongitude()
+            );
+        }
 
         return BookResponseDTO.builder()
                 .id(book.getId())
