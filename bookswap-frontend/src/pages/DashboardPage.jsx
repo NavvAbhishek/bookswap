@@ -314,22 +314,30 @@ const DashboardPage = () => {
     setDeletingBookId(null);
   };
 
-  const handleFormSubmit = (formData, photo) => {
-    const promise = editingBook
-      ? BookService.updateBook(editingBook.id, formData, photo)
-      : BookService.addBook(formData, photo);
+const handleFormSubmit = async (formData, photo) => {
+    try {
+        let bookData = { ...formData };
+        
+        if (photo instanceof File) {
+            const uploadResponse = await BookService.uploadBookPhoto(photo);
+            bookData.photoFilename = uploadResponse.data.filename;
+        }
 
-    promise
-      .then(() => {
-        fetchMyBooks(); // Refresh the book list
+        // --- ADD THIS CONSOLE LOG ---
+        console.log("Final book data being sent to backend:", bookData);
+        // --- END OF CONSOLE LOG ---
+
+        await BookService.addBook(bookData);
+        
+        fetchMyBooks();
         handleCloseModals();
-      })
-      .catch((err) => {
-        // You can add more specific error handling here
+
+    } catch (err) {
         console.error("Failed to save book:", err);
-        alert("Error: Could not save the book.");
-      });
-  };
+        const errorMsg = err.response?.data?.message || "Could not save the book. Please try again.";
+        alert("Error: " + errorMsg);
+    }
+};
 
   const handleDeleteConfirm = () => {
     if (deletingBookId) {

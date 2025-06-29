@@ -28,8 +28,8 @@ public class BookService {
     @Value("${book.photo.upload-dir}")
     private String bookPhotoUploadDir;
 
-    public BookResponseDTO addBook(BookRequestDTO request, MultipartFile photo, User owner) {
-        String photoFileName = fileStorageService.storeFile(photo, bookPhotoUploadDir);
+    public BookResponseDTO addBook(BookRequestDTO request, User owner) {
+        String photoFileName = request.getPhotoFilename();
 
         Book book = Book.builder()
                 .title(request.getTitle())

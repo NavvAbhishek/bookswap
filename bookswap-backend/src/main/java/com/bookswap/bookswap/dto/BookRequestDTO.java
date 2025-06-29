@@ -16,4 +16,5 @@ public class BookRequestDTO {
     private Double latitude;
     private Double longitude;
     private BookStatus status;
+    private String photoFilename;
 }

@@ -1,6 +1,5 @@
 package com.bookswap.bookswap.controller;
 
-
 import com.bookswap.bookswap.dto.BookRequestDTO;
 import com.bookswap.bookswap.dto.BookResponseDTO;
 import com.bookswap.bookswap.model.User;
@@ -24,11 +23,11 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookResponseDTO> addBook(
-            @RequestPart("bookRequest") BookRequestDTO bookRequest,
-            @RequestPart("photo") MultipartFile photo,
+            @RequestBody BookRequestDTO bookRequest, // <-- Use @RequestBody for JSON
             @AuthenticationPrincipal User currentUser) {
 
-        BookResponseDTO newBook = bookService.addBook(bookRequest, photo, currentUser);
+        // This method no longer handles a MultipartFile
+        BookResponseDTO newBook = bookService.addBook(bookRequest, currentUser);
         return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
 
