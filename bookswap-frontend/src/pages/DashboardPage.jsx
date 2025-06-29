@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-//import { useNavigate } from "react-router-dom";
 import BookService from "../services/book.service";
+import LocationPicker from "../components/LocationPicker";
 import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+
+const defaultLocation = { lat: 6.8411, lng: 79.923 };
 
 // --- Reusable Book Form Modal Component ---
 const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
@@ -18,7 +20,8 @@ const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
     bookCondition: "GOOD",
     description: "",
     exchangePreference: "",
-    location: "",
+    latitude: defaultLocation.lat,
+    longitude: defaultLocation.lng,
     status: "AVAILABLE",
   });
   const [photo, setPhoto] = useState(null);
@@ -34,7 +37,8 @@ const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
         bookCondition: initialData.bookCondition || "GOOD",
         description: initialData.description || "",
         exchangePreference: initialData.exchangePreference || "",
-        location: initialData.location || "",
+        latitude: initialData.latitude || defaultLocation.lat,
+        longitude: initialData.longitude || defaultLocation.lng,
         status: initialData.status || "AVAILABLE",
       });
       setPreview(initialData.photoUrl);
@@ -48,7 +52,8 @@ const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
         bookCondition: "GOOD",
         description: "",
         exchangePreference: "",
-        location: "",
+        latitude: defaultLocation.lat,
+        longitude: defaultLocation.lng,
         status: "AVAILABLE",
       });
       setPreview(null);
@@ -58,6 +63,14 @@ const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleLocationChange = (newLocation) => {
+    setFormData((prev) => ({
+      ...prev,
+      latitude: newLocation.lat,
+      longitude: newLocation.lng,
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -161,14 +174,21 @@ const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
             placeholder="Exchange Preference (e.g., Swap only)"
             className="w-full p-2 border rounded"
           />
-          <input
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            placeholder="Book Location (e.g., Colombo)"
-            required
-            className="w-full p-2 border rounded"
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Book Location
+            </label>
+            <p className="text-xs text-gray-500 mb-2">
+              Search for a place or drag the pin to set the pickup location.
+            </p>
+            <LocationPicker
+              onLocationChange={handleLocationChange}
+              initialPosition={{
+                lat: formData.latitude,
+                lng: formData.longitude,
+              }}
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Book Photo
@@ -262,7 +282,7 @@ const DashboardPage = () => {
         setLoading(false);
       },
       (error) => {
-        setError("Failed to fetch your books.",error);
+        setError("Failed to fetch your books.", error);
         setLoading(false);
       }
     );

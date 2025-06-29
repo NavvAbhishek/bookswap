@@ -9,9 +9,9 @@ const mapContainerStyle = {
   borderRadius: '0.5rem',
 };
 
-
+// A default center for the map - using your location in Sri Lanka
 const defaultCenter = {
-  lat: 6.8411, 
+  lat: 6.8411, // Maharagama, Sri Lanka
   lng: 79.923,
 };
 
