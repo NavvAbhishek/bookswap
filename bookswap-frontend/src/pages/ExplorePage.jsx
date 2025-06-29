@@ -3,11 +3,20 @@ import BookService from "../services/book.service";
 import {
   MapPinIcon,
   ArrowTopRightOnSquareIcon,
+  GlobeAltIcon,
 } from "@heroicons/react/24/solid";
 
 // --- Reusable Book Card Component for the Explore Page ---
 const BookCard = ({ book }) => {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${book.latitude},${book.longitude}`;
+
+  const formatDistance = (distance) => {
+    if (distance < 1) {
+      return "Less than 1 km";
+    }
+    // Round to one decimal place
+    return `${distance.toFixed(1)} km away`;
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-xl w-full">
@@ -34,7 +43,7 @@ const BookCard = ({ book }) => {
 
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center text-gray-700 text-sm">
-          <MapPinIcon className="w-4 h-4 mr-1 text-gray-400" />
+          <MapPinIcon className="w-4 h-4 mr-1 text-red-500" />
           <span>{book.locationName}</span>
         </div>
         <a
@@ -46,7 +55,11 @@ const BookCard = ({ book }) => {
           View on Map
           <ArrowTopRightOnSquareIcon className="w-3 h-3 ml-1" />
         </a>
+       
       </div>
+       <div className="flex items-center mt-1 text-gray-500 text-sm px-4">
+          <p className="font-bold">Distance: <span className="font-normal">{formatDistance(book.distanceKm)}</span></p>
+        </div>
 
       <div className="px-4 py-4">
         <button className="w-full cursor-pointer px-4 py-2 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
