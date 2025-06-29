@@ -25,4 +25,5 @@ public class BookResponseDTO {
     private Long ownerId;
     private String ownerName;
     private LocalDateTime createdAt;
+    private String locationName;
 }

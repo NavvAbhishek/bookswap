@@ -24,6 +24,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final FileStorageService fileStorageService;
+    private final GeocodingService geocodingService;
 
     @Value("${book.photo.upload-dir}")
     private String bookPhotoUploadDir;
@@ -121,6 +122,8 @@ public class BookService {
                 ? "http://localhost:8080/uploads/book-pics/" + book.getPhotoUrl()
                 : null;
 
+        String locationName = geocodingService.getCityFromCoordinates(book.getLatitude(), book.getLongitude());
+
         return BookResponseDTO.builder()
                 .id(book.getId())
                 .title(book.getTitle())
@@ -137,6 +140,7 @@ public class BookService {
                 .ownerId(book.getOwner().getId())
                 .ownerName(book.getOwner().getName())
                 .createdAt(book.getCreatedAt())
+                .locationName(locationName)
                 .build();
     }
 }

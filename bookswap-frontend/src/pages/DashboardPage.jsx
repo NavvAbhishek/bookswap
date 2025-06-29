@@ -323,10 +323,6 @@ const handleFormSubmit = async (formData, photo) => {
             bookData.photoFilename = uploadResponse.data.filename;
         }
 
-        // --- ADD THIS CONSOLE LOG ---
-        console.log("Final book data being sent to backend:", bookData);
-        // --- END OF CONSOLE LOG ---
-
         await BookService.addBook(bookData);
         
         fetchMyBooks();
