@@ -1,48 +1,55 @@
 import React, { useState, useEffect } from "react";
 import BookService from "../services/book.service";
-import { MapPinIcon,ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import {
+  MapPinIcon,
+  ArrowTopRightOnSquareIcon,
+} from "@heroicons/react/24/solid";
 
 // --- Reusable Book Card Component for the Explore Page ---
 const BookCard = ({ book }) => {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${book.latitude},${book.longitude}`;
 
   return (
-    <div className="flex flex-col overflow-hidden bg-white rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
-      <img
-        className="object-cover w-full h-56"
-        src={book.photoUrl}
-        alt={book.title}
-      />
-      <div className="flex flex-col flex-grow p-4">
-        <h3 className="text-lg font-bold text-gray-900">{book.title}</h3>
-        <p className="text-sm text-gray-600">by {book.author}</p>
-        <div className="flex-grow mt-2">
-          <span className="inline-block px-2 py-1 text-xs font-semibold text-indigo-800 bg-indigo-100 rounded-full">
-            {book.genre}
-          </span>
-        </div>
-        <div className="mt-4 text-sm text-gray-700">
-          <p>
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-xl w-full">
+      <div className="flex flex-row p-4">
+        <img
+          className="object-cover w-auto h-44 rounded-md flex-shrink-0"
+          src={book.photoUrl}
+          alt={book.title}
+        />
+
+        <div className="ml-4 flex flex-col justify-between flex-1">
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900">{book.title}</h3>
+            <p className="text-sm text-gray-600 mb-1">by {book.author}</p>
+            <span className="inline-block px-2 py-1 text-[10px] font-semibold text-indigo-800 bg-indigo-100 rounded-full mb-1">
+              {book.genre}
+            </span>
+          </div>
+          <div className="text-sm text-gray-700 mt-2">
             Owner: <span className="font-medium">{book.ownerName}</span>
-          </p>
-          <div className="flex items-center justify-between mt-1">
-            <div className="flex items-center">
-              <MapPinIcon className="w-4 h-4 mr-1 text-gray-400" />
-              {/* Display the new locationName field from the backend */}
-              <span>{book.locationName}</span>
-            </div>
-            <a
-              href={googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-800"
-            >
-              View on Map
-              <ArrowTopRightOnSquareIcon className="w-3 h-3 ml-1" />
-            </a>
           </div>
         </div>
-        <button className="w-full px-4 py-2 mt-4 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+      </div>
+
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center text-gray-700 text-sm">
+          <MapPinIcon className="w-4 h-4 mr-1 text-gray-400" />
+          <span>{book.locationName}</span>
+        </div>
+        <a
+          href={googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+        >
+          View on Map
+          <ArrowTopRightOnSquareIcon className="w-3 h-3 ml-1" />
+        </a>
+      </div>
+
+      <div className="px-4 py-4">
+        <button className="w-full cursor-pointer px-4 py-2 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
           Request Swap
         </button>
       </div>
