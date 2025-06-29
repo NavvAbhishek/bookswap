@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/auth.service';
 import { UserCircleIcon } from '@heroicons/react/24/solid'; 
+import LocationPicker from '../components/LocationPicker'
+
+const defaultLocation = {
+  lat: 6.8411, // Maharagama, Sri Lanka
+  lng: 79.923,
+};
 
 const SignUp = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [location, setLocation] = useState('');
+     const [latitude, setLatitude] = useState(defaultLocation.lat);
+    const [longitude, setLongitude] = useState(defaultLocation.lng);
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
 
@@ -30,15 +37,20 @@ const SignUp = () => {
         }
     };
 
+    const handleLocationChange = (newLocation) => {
+        setLatitude(newLocation.lat);
+        setLongitude(newLocation.lng);
+    };
+
     const handleSignUp = (e) => {
         e.preventDefault();
         setMessage('');
         setLoading(true);
 
-        const signUpRequest = { name, email, password, location };
+        const signUpRequest = { name, email, password, latitude, longitude };
 
         AuthService.signup(signUpRequest, selectedFile).then(
-            (response) => {
+            () => {
                 setMessage("Sign up successful! You will be redirected to login.");
                 setSuccessful(true);
                 setLoading(false);
@@ -116,16 +128,11 @@ const SignUp = () => {
                     </div>
                     {/* Location Input */}
                     <div>
-                        <label htmlFor="location" className="sr-only">Location</label>
-                        <input
-                            id="location"
-                            name="location"
-                            type="text"
-                            required
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Your City or Location"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
+                        <label className="block text-sm font-medium text-gray-700">Your Location</label>
+                        <p className="text-xs text-gray-500 mb-2">Search for your city or drag the pin to set your primary location.</p>
+                        <LocationPicker
+                            onLocationChange={handleLocationChange}
+                            initialPosition={{ lat: latitude, lng: longitude }}
                         />
                     </div>
 
