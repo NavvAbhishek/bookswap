@@ -48,7 +48,11 @@ public class Book {
 
     private String exchangePreference;
 
-    private String location; // Simple text location for now
+    @Column(nullable = false)
+    private Double latitude;
+
+    @Column(nullable = false)
+    private Double longitude;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

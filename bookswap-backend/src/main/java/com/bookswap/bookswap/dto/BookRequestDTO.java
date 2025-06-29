@@ -13,6 +13,7 @@ public class BookRequestDTO {
     private BookCondition bookCondition;
     private String description;
     private String exchangePreference;
-    private String location;
+    private Double latitude;
+    private Double longitude;
     private BookStatus status;
 }

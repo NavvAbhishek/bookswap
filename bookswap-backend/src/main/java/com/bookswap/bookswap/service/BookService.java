@@ -39,7 +39,8 @@ public class BookService {
                 .bookCondition(request.getBookCondition())
                 .description(request.getDescription())
                 .exchangePreference(request.getExchangePreference())
-                .location(request.getLocation())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
                 .photoUrl(photoFileName)
                 .status(request.getStatus() != null ? request.getStatus() : BookStatus.AVAILABLE)
                 .owner(owner)
@@ -88,7 +89,8 @@ public class BookService {
         book.setBookCondition(request.getBookCondition());
         book.setDescription(request.getDescription());
         book.setExchangePreference(request.getExchangePreference());
-        book.setLocation(request.getLocation());
+        book.setLatitude(request.getLatitude());
+        book.setLongitude(request.getLongitude());
         book.setStatus(request.getStatus());
 
         if (photo != null && !photo.isEmpty()) {
@@ -129,7 +131,8 @@ public class BookService {
                 .description(book.getDescription())
                 .photoUrl(photoUrl)
                 .exchangePreference(book.getExchangePreference())
-                .location(book.getLocation())
+                .latitude(book.getLatitude())
+                .longitude(book.getLongitude())
                 .status(book.getStatus())
                 .ownerId(book.getOwner().getId())
                 .ownerName(book.getOwner().getName())

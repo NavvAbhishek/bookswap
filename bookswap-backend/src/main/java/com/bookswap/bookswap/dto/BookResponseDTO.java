@@ -19,7 +19,8 @@ public class BookResponseDTO {
     private String description;
     private String photoUrl;
     private String exchangePreference;
-    private String location;
+    private Double latitude;
+    private Double longitude;
     private BookStatus status;
     private Long ownerId;
     private String ownerName;
