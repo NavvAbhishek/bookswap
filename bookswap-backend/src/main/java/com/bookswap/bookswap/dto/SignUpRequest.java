@@ -7,5 +7,6 @@ public class SignUpRequest {
     private String name;
     private String email;
     private String password;
-    private String location;
+    private Double latitude;
+    private Double longitude;
 }

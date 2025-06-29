@@ -32,7 +32,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    private String location;
+    private Double latitude;
+    private Double longitude;
     private String profilePictureUrl;
 
     // --- UserDetails Methods ---

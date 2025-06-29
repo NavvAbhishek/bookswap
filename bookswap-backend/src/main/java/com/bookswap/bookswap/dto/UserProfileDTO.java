@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class UserProfileDTO {
     private String name;
     private String email;
-    private String location;
+    private Double latitude;
+    private Double longitude;
+    private String locationName;
     private String profilePictureUrl;
 }

@@ -35,7 +35,8 @@ public class AuthService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .location(request.getLocation())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
                 .profilePictureUrl(profilePictureFileName)
                 .build();
 
