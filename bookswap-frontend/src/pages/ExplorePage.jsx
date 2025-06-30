@@ -40,6 +40,9 @@ const BookCard = ({ book }) => {
           </div>
         </div>
       </div>
+      <div className="px-4">
+        <p>{book.description}</p>
+      </div>
 
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center text-gray-700 text-sm">
@@ -75,7 +78,7 @@ const ExplorePage = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-console.log(books)
+
   useEffect(() => {
     setLoading(true);
     BookService.getExploreBooks()
