@@ -150,6 +150,7 @@ public class BookService {
                 .ownerName(book.getOwner().getName())
                 .createdAt(book.getCreatedAt())
                 .locationName(locationName)
+                .distanceKm(distance)
                 .build();
     }
 }

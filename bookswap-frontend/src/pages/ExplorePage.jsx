@@ -75,7 +75,7 @@ const ExplorePage = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+console.log(books)
   useEffect(() => {
     setLoading(true);
     BookService.getExploreBooks()
