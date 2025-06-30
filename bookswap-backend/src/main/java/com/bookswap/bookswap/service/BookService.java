@@ -118,7 +118,7 @@ public class BookService {
     }
 
 
-    private BookResponseDTO mapToBookResponseDTO(Book book, User currentUser) {
+    public BookResponseDTO mapToBookResponseDTO(Book book, User currentUser) {
         String photoUrl = book.getPhotoUrl() != null
                 ? "http://localhost:8080/uploads/book-pics/" + book.getPhotoUrl()
                 : null;
