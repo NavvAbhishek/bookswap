@@ -44,4 +44,3 @@ public class SwapRequest {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }
-}

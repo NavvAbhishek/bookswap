@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import BookService from "../services/book.service";
+import SwapRequestService from "../services/swap-request.service";
 import {
   MapPinIcon,
   ArrowTopRightOnSquareIcon,
-  GlobeAltIcon,
 } from "@heroicons/react/24/solid";
 
 // --- Reusable Book Card Component for the Explore Page ---
-const BookCard = ({ book }) => {
+const BookCard = ({ book, onRequestSwap, isRequested }) => {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${book.latitude},${book.longitude}`;
 
   const formatDistance = (distance) => {
@@ -58,15 +58,26 @@ const BookCard = ({ book }) => {
           View on Map
           <ArrowTopRightOnSquareIcon className="w-3 h-3 ml-1" />
         </a>
-       
       </div>
-       <div className="flex items-center mt-1 text-gray-500 text-sm px-4">
-          <p className="font-bold">Distance: <span className="font-normal">{formatDistance(book.distanceKm)}</span></p>
-        </div>
+      <div className="flex items-center mt-1 text-gray-500 text-sm px-4">
+        <p className="font-bold">
+          Distance:{" "}
+          <span className="font-normal">{formatDistance(book.distanceKm)}</span>
+        </p>
+      </div>
 
       <div className="px-4 py-4">
-        <button className="w-full cursor-pointer px-4 py-2 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
-          Request Swap
+        <button
+          onClick={() => onRequestSwap(book.id)}
+          disabled={isRequested}
+          className={`w-full cursor-pointer px-4 py-2 mt-4 font-bold text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
+            isRequested
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
+          }`}
+        >
+          {isRequested ? "Requested" : "Request Swap"}{" "}
+          {/* <-- 4. Change text */}
         </button>
       </div>
     </div>
@@ -78,6 +89,7 @@ const ExplorePage = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [requestedBookIds, setRequestedBookIds] = useState(new Set());
 
   useEffect(() => {
     setLoading(true);
@@ -94,6 +106,20 @@ const ExplorePage = () => {
         setLoading(false);
       });
   }, []);
+
+  const handleRequestSwap = (bookId) => {
+    SwapRequestService.createRequest(bookId)
+      .then(() => {
+        // Add the book ID to our set of requested IDs to update the UI
+        setRequestedBookIds((prev) => new Set(prev).add(bookId));
+        alert("Swap request sent successfully!");
+      })
+      .catch((err) => {
+        const errorMsg =
+          err.response?.data?.message || "Could not send swap request.";
+        alert(`Error: ${errorMsg}`);
+      });
+  };
 
   const renderContent = () => {
     if (loading) {
@@ -114,7 +140,12 @@ const ExplorePage = () => {
     return (
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {books.map((book) => (
-          <BookCard key={book.id} book={book} />
+          <BookCard
+            key={book.id}
+            book={book}
+            onRequestSwap={handleRequestSwap}
+            isRequested={requestedBookIds.has(book.id)}
+          />
         ))}
       </div>
     );
