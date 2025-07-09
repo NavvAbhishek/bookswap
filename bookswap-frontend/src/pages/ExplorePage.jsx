@@ -5,6 +5,7 @@ import {
   MapPinIcon,
   ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/solid";
+import Navbar from "../components/Navbar";
 
 // --- Reusable Book Card Component for the Explore Page ---
 const BookCard = ({ book, onRequestSwap, isRequested }) => {
@@ -152,40 +153,43 @@ const ExplorePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container px-6 py-8 mx-auto md:px-12">
-        {/* Header and Filters */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">Explore Books</h1>
-          <p className="mt-2 text-lg text-gray-600">
-            Discover books from other readers in the network.
-          </p>
-        </div>
-
-        {/* Placeholder for Search and Filter bar */}
-        <div className="p-4 mb-8 bg-white rounded-lg shadow">
-          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-            <input
-              type="text"
-              placeholder="Search by title or author..."
-              className="flex-grow p-2 border rounded-md"
-            />
-            <select className="p-2 border rounded-md">
-              <option>Filter by Genre</option>
-              <option>Fiction</option>
-              <option>Non-Fiction</option>
-              <option>Science Fiction</option>
-            </select>
-            <button className="px-6 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
-              Search
-            </button>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gray-50">
+        <div className="container px-6 py-8 mx-auto md:px-12">
+          {/* Header and Filters */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-900">Explore Books</h1>
+            <p className="mt-2 text-lg text-gray-600">
+              Discover books from other readers in the network.
+            </p>
           </div>
-        </div>
 
-        {/* Content Grid */}
-        {renderContent()}
+          {/* Placeholder for Search and Filter bar */}
+          <div className="p-4 mb-8 bg-white rounded-lg shadow">
+            <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+              <input
+                type="text"
+                placeholder="Search by title or author..."
+                className="flex-grow p-2 border rounded-md"
+              />
+              <select className="p-2 border rounded-md">
+                <option>Filter by Genre</option>
+                <option>Fiction</option>
+                <option>Non-Fiction</option>
+                <option>Science Fiction</option>
+              </select>
+              <button className="px-6 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
+                Search
+              </button>
+            </div>
+          </div>
+
+          {/* Content Grid */}
+          {renderContent()}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

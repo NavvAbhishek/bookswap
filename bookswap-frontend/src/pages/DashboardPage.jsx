@@ -12,6 +12,7 @@ import {
   XCircleIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
+import Navbar from "../components/Navbar";
 
 const defaultLocation = { lat: 6.8411, lng: 79.923 };
 
@@ -403,6 +404,7 @@ const DashboardPage = () => {
 
   return (
     <>
+    <Navbar/>
       <div className="min-h-screen bg-gray-100">
         <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">

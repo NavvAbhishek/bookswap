@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthService from '../services/auth.service';
+import Navbar from '../components/Navbar';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -42,7 +43,9 @@ const Login = () => {
 
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div>
+            <Navbar/>
+            <div className="flex items-center justify-center min-h-[calc(100vh-68px)] bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900">Sign in to your account</h2>
@@ -126,6 +129,7 @@ const Login = () => {
                     )}
                 </form>
             </div>
+        </div>
         </div>
     );
 };
