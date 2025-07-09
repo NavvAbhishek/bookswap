@@ -1,20 +1,16 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../services/auth.service";
+import { Link } from "react-router-dom";
 
 // Icons from lucide-react
 import {
-  BookOpen,
   Users,
-  MapPin,
   HeartHandshake,
   Leaf,
-  Milestone,
-  Star,
   Twitter,
   Facebook,
   Instagram,
 } from "lucide-react";
+import Navbar from "../components/Navbar";
 
 const featuredBooks = [
   {
@@ -92,67 +88,6 @@ const testimonials = [
   },
 ];
 
-const Navbar = () => {
-  const navigate = useNavigate();
-  const currentUser = AuthService.getCurrentUser();
-
-  const handleLogout = () => {
-    AuthService.logout();
-    navigate("/login");
-  };
-
-  return (
-    <header className="absolute top-0 left-0 right-0 z-20">
-      <nav className="container px-6 py-4 mx-auto md:px-12">
-        <div className="items-center justify-between md:flex">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="text-2xl font-bold text-white">
-              📚 BookSwap
-            </Link>
-          </div>
-          <div className="items-center hidden md:flex">
-            {currentUser ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-white">Welcome, {currentUser.name}!</span>
-                <Link to="/explore" className="text-white hover:text-gray-200">
-                  Explore
-                </Link>
-                <Link
-                  to="/dashboard"
-                  className="px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-200"
-                >
-                  My Books
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 text-sm font-medium text-center text-white bg-indigo-500 rounded-lg hover:bg-indigo-600"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <Link
-                  to="/login"
-                  className="px-4 py-2 text-sm font-medium text-center text-white hover:text-gray-200"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/signup"
-                  className="px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-200"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
-    </header>
-  );
-};
-
 const BookCard = ({ book }) => (
   <div className="overflow-hidden bg-white rounded-lg shadow-lg">
     <img
@@ -179,15 +114,7 @@ const HomePage = () => {
   return (
     <div className="bg-white">
       {/* 1. Hero Section */}
-      <div className="relative pt-16 pb-32 text-white bg-gray-800">
-        <div className="absolute inset-0">
-          <img
-            className="object-cover w-full h-full"
-            src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80"
-            alt="Library Background"
-          />
-          <div className="absolute inset-0 bg-black opacity-60"></div>
-        </div>
+      <div className="relative pb-32 text-white bg-gray-800">
         <Navbar />
         <div className="relative container px-6 mx-auto mt-16 text-center md:px-12">
           <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
