@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import heroImg from "../assets/hero.png";
 
 // Icons from lucide-react
 import {
@@ -114,39 +115,54 @@ const HomePage = () => {
   return (
     <div className="bg-white">
       {/* 1. Hero Section */}
-      <div className="relative pb-32 text-white bg-gray-800">
+      <div className="relative pb-32 text-white">
         <Navbar />
-        <div className="relative container px-6 mx-auto mt-16 text-center md:px-12">
-          <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
-            Give Your Books a New Chapter
-          </h1>
-          <p className="max-w-3xl mx-auto mt-4 text-lg text-gray-300 md:text-xl">
-            Join a vibrant community of readers. Exchange books you've finished
-            for ones you're dying to read.
-          </p>
-          <div className="mt-8">
-            <Link
-              to="/signup"
-              className="px-8 py-4 text-lg font-bold text-white bg-indigo-600 rounded-full hover:bg-indigo-700"
-            >
-              Start Swapping for Free
-            </Link>
-          </div>
-          {/* Quick Stats */}
-          <div className="max-w-4xl mx-auto mt-16">
-            <div className="flex flex-wrap justify-center -mx-4">
-              <div className="w-full px-4 mb-4 md:w-1/3">
-                <p className="text-3xl font-bold">100+</p>
-                <p className="text-gray-400">Active Members</p>
+        <div className="relative container px-6 mx-auto mt-16 md:px-12">
+          <div className="flex flex-col items-center justify-between md:flex-row">
+            {/* Left: Text Content */}
+            <div className="w-full md:w-1/2 text-center md:text-left">
+              <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-blue-800 md:text-4xl lg:text-5xl">
+                Give Your Books a New Chapter
+              </h1>
+              <p className="max-w-md mt-4 text-md text-blue-500 md:text-md">
+                Join a vibrant community of readers. Exchange books you've
+                finished for ones you're dying to read.
+              </p>
+              <div className="mt-8">
+                <Link
+                  to="/signup"
+                  className="px-5 py-2 text-md font-bold text-white bg-blue-600 rounded-full hover:bg-indigo-700"
+                >
+                  Start Swapping for Free
+                </Link>
               </div>
-              <div className="w-full px-4 mb-4 md:w-1/3">
-                <p className="text-3xl font-bold">500+</p>
-                <p className="text-gray-400">Books Exchanged</p>
+
+              {/* Quick Stats */}
+              <div className="max-w-md mt-12 text-gray-800">
+                <div className="flex flex-wrap -mx-2">
+                  <div className="w-1/3 px-2 mb-4">
+                    <p className="text-3xl font-bold">100+</p>
+                    <p className="text-gray-800">Active Members</p>
+                  </div>
+                  <div className="w-1/3 px-2 mb-4">
+                    <p className="text-3xl font-bold">500+</p>
+                    <p className="text-gray-800">Books Exchanged</p>
+                  </div>
+                  <div className="w-1/3 px-2 mb-4">
+                    <p className="text-3xl font-bold">10+</p>
+                    <p className="text-gray-800">Cities Connected</p>
+                  </div>
+                </div>
               </div>
-              <div className="w-full px-4 mb-4 md:w-1/3">
-                <p className="text-3xl font-bold">10+</p>
-                <p className="text-gray-400">Cities Connected</p>
-              </div>
+            </div>
+
+            {/* Right: Hero Image */}
+            <div className="w-full mt-12 md:mt-0 md:w-1/2 flex justify-center">
+              <img
+                src={heroImg} 
+                alt="Book Exchange"
+                className="w-full max-w-md rounded-lg"
+              />
             </div>
           </div>
         </div>
