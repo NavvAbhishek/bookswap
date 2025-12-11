@@ -77,11 +77,11 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 relative overflow-hidden">
+    <div className="min-h-screen bg-[#fff3b0]/20 relative overflow-hidden">
       {/* Animated Background Blobs */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-      <div className="absolute top-40 right-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-      <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+      <div className="absolute top-20 left-10 w-72 h-72 bg-[#e09f3e]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+      <div className="absolute top-40 right-10 w-72 h-72 bg-[#335c67]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+      <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#9e2a2b]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
 
       <Navbar />
 
@@ -98,11 +98,9 @@ const SignUp = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-4xl md:text-5xl font-extrabold mb-4"
+              className="text-4xl md:text-5xl font-extrabold mb-4 text-[#335c67]"
             >
-              <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Join BookSwap
-              </span>
+              Join BookSwap
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -122,9 +120,9 @@ const SignUp = () => {
             className="relative"
           >
             {/* Glow Effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-lg opacity-20" />
+            <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-10" />
 
-            <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-12 border border-white/20">
+            <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-200">
               <form onSubmit={handleSignUp} className="space-y-6">
                 {/* Name Input */}
                 <Input
@@ -167,7 +165,7 @@ const SignUp = () => {
                 {/* Location Input */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
-                    <MapPin className="w-4 h-4 text-indigo-600" />
+                    <MapPin className="w-4 h-4 text-[#335c67]" />
                     Your Location
                   </label>
                   <p className="text-xs text-gray-500 mb-3">
@@ -184,12 +182,12 @@ const SignUp = () => {
                 {/* Profile Picture Upload */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
-                    <Upload className="w-4 h-4 text-indigo-600" />
+                    <Upload className="w-4 h-4 text-[#335c67]" />
                     Profile Photo
                   </label>
                   <div className="flex items-center gap-6">
                     <div className="relative">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center border-2 border-gray-200">
+                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#fff3b0]/30 flex items-center justify-center border-2 border-gray-200">
                         {preview ? (
                           <img
                             src={preview}
@@ -210,8 +208,8 @@ const SignUp = () => {
                       htmlFor="file-upload"
                       className="cursor-pointer"
                     >
-                      <div className="px-6 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-200 rounded-xl hover:from-indigo-100 hover:to-purple-100 transition-all duration-300">
-                        <span className="text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      <div className="px-6 py-3 bg-[#335c67] hover:bg-[#540b0e] text-white border-2 border-[#335c67] hover:border-[#540b0e] rounded-xl transition-all duration-300">
+                        <span className="text-sm font-semibold">
                           {preview ? "Change Photo" : "Upload Photo"}
                         </span>
                       </div>
@@ -271,7 +269,7 @@ const SignUp = () => {
                     Already have an account?{" "}
                     <Link
                       to="/login"
-                      className="font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700"
+                      className="font-semibold text-[#335c67] hover:text-[#e09f3e]"
                     >
                       Sign in
                     </Link>

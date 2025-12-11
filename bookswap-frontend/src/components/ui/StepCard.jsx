@@ -11,7 +11,7 @@ const StepCard = ({ number, title, description, index }) => {
     >
       {/* Connection line (for desktop) */}
       {index < 3 && (
-        <div className="hidden lg:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-indigo-300 to-transparent -z-10" />
+        <div className="hidden lg:block absolute top-12 left-full w-full h-0.5 bg-[#335c67]/30 -z-10" />
       )}
 
       <div className="flex flex-col items-center text-center">
@@ -21,8 +21,8 @@ const StepCard = ({ number, title, description, index }) => {
           transition={{ duration: 0.6 }}
           className="relative w-24 h-24 mb-6"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-          <div className="relative w-full h-full bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-3xl font-bold text-white shadow-xl">
+          <div className="absolute inset-0 bg-[#e09f3e] rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
+          <div className="relative w-full h-full bg-[#e09f3e] hover:bg-[#9e2a2b] transition-colors duration-300 rounded-2xl flex items-center justify-center text-3xl font-bold text-white shadow-xl">
             {number}
           </div>
         </motion.div>

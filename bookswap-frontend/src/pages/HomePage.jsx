@@ -32,7 +32,7 @@ const featuredBooks = [
     author: "Matt Haig",
     distance: "5 km",
     imageUrl:
-      "https://placehold.co/300x450/6366f1/white?text=The+Midnight\nLibrary",
+      "https://placehold.co/300x450/335c67/white?text=The+Midnight\nLibrary",
   },
   {
     id: 2,
@@ -40,7 +40,7 @@ const featuredBooks = [
     author: "Andy Weir",
     distance: "2 km",
     imageUrl:
-      "https://placehold.co/300x450/10b981/white?text=Project\nHail+Mary",
+      "https://placehold.co/300x450/e09f3e/white?text=Project\nHail+Mary",
   },
   {
     id: 3,
@@ -48,21 +48,21 @@ const featuredBooks = [
     author: "Kazuo Ishiguro",
     distance: "8 km",
     imageUrl:
-      "https://placehold.co/300x450/f59e0b/white?text=Klara+and\nthe+Sun",
+      "https://placehold.co/300x450/9e2a2b/white?text=Klara+and\nthe+Sun",
   },
   {
     id: 4,
     title: "Dune",
     author: "Frank Herbert",
     distance: "12 km",
-    imageUrl: "https://placehold.co/300x450/ef4444/white?text=Dune",
+    imageUrl: "https://placehold.co/300x450/540b0e/white?text=Dune",
   },
   {
     id: 5,
     title: "Atomic Habits",
     author: "James Clear",
     distance: "3 km",
-    imageUrl: "https://placehold.co/300x450/3b82f6/white?text=Atomic\nHabits",
+    imageUrl: "https://placehold.co/300x450/335c67/white?text=Atomic\nHabits",
   },
   {
     id: 6,
@@ -70,7 +70,7 @@ const featuredBooks = [
     author: "Alex Michaelides",
     distance: "6 km",
     imageUrl:
-      "https://placehold.co/300x450/8b5cf6/white?text=The+Silent\nPatient",
+      "https://placehold.co/300x450/e09f3e/white?text=The+Silent\nPatient",
   },
 ];
 
@@ -81,7 +81,7 @@ const testimonials = [
     quote:
       "BookSwap is amazing! I've discovered so many great books and met fellow readers in my neighborhood. It's a game-changer for my wallet and the planet!",
     location: "New York",
-    imageUrl: "https://placehold.co/100x100/ec4899/white?text=Sarah",
+    imageUrl: "https://placehold.co/100x100/e09f3e/white?text=Sarah",
   },
   {
     id: 2,
@@ -89,7 +89,7 @@ const testimonials = [
     quote:
       "The platform is so easy to use. I listed my old books and got a swap request within a day. Highly recommended for any book lover.",
     location: "San Francisco",
-    imageUrl: "https://placehold.co/100x100/22c55e/white?text=David",
+    imageUrl: "https://placehold.co/100x100/335c67/white?text=David",
   },
   {
     id: 3,
@@ -97,7 +97,7 @@ const testimonials = [
     quote:
       "As a student, buying books can be expensive. BookSwap has helped me save so much money while keeping my reading habit alive. Love the community aspect!",
     location: "Chicago",
-    imageUrl: "https://placehold.co/100x100/f97316/white?text=Emily",
+    imageUrl: "https://placehold.co/100x100/9e2a2b/white?text=Emily",
   },
 ];
 
@@ -107,12 +107,12 @@ const HomePage = () => {
   return (
     <div className="bg-white overflow-x-hidden">
       {/* 1. Hero Section with Premium Design */}
-      <section className="relative min-h-screen flex items-center">
+      <section className="relative min-h-screen flex items-center bg-[#fff3b0]/20">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-          <div className="absolute top-40 right-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-[#e09f3e]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+          <div className="absolute top-40 right-10 w-72 h-72 bg-[#335c67]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#9e2a2b]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
         </div>
 
         <Navbar />
@@ -130,16 +130,16 @@ const HomePage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-indigo-200 mb-6"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-[#e09f3e]/30 mb-6"
               >
-                <Sparkles className="w-4 h-4 text-indigo-600" />
-                <span className="text-sm font-medium text-indigo-600">
+                <Sparkles className="w-4 h-4 text-[#e09f3e]" />
+                <span className="text-sm font-medium text-[#335c67]">
                   Join 100+ Active Readers
                 </span>
               </motion.div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
-                <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <span className="text-[#335c67]">
                   Give Your Books
                 </span>
                 <br />
@@ -187,8 +187,8 @@ const HomePage = () => {
                     transition={{ delay: 0.7 + index * 0.1 }}
                     className="text-center"
                   >
-                    <stat.icon className="w-8 h-8 mx-auto mb-2 text-indigo-600" />
-                    <p className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    <stat.icon className="w-8 h-8 mx-auto mb-2 text-[#335c67]" />
+                    <p className="text-3xl font-bold text-[#335c67]">
                       {stat.number}
                     </p>
                     <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
@@ -205,7 +205,7 @@ const HomePage = () => {
               className="w-full md:w-1/2 flex justify-center relative"
             >
               <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-30 animate-pulse" />
+                <div className="absolute -inset-4 bg-[#e09f3e] rounded-3xl blur-2xl opacity-20 animate-pulse" />
                 <img
                   src={heroImg}
                   alt="Book Exchange"
@@ -218,7 +218,7 @@ const HomePage = () => {
       </section>
 
       {/* 2. Value Proposition Section */}
-      <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+      <section className="py-24 bg-white">
         <div className="container px-6 mx-auto md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -227,10 +227,8 @@ const HomePage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Why BookSwap?
-              </span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[#335c67]">
+              Why BookSwap?
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
               Discover the benefits of joining our growing community
@@ -242,21 +240,21 @@ const HomePage = () => {
               icon={HeartHandshake}
               title="Save Money"
               description="Exchange books instead of buying new ones. Keep your wallet happy and your bookshelf fresh."
-              gradient="from-indigo-500 to-purple-500"
+              bgColor="bg-[#e09f3e]"
               index={0}
             />
             <FeatureCard
               icon={Users}
               title="Meet Local Readers"
               description="Connect with book lovers near you and build a community around your shared passion for reading."
-              gradient="from-purple-500 to-pink-500"
+              bgColor="bg-[#335c67]"
               index={1}
             />
             <FeatureCard
               icon={Leaf}
               title="Eco-Friendly"
               description="Give your books a second life. Swapping is a sustainable choice that reduces waste and promotes reuse."
-              gradient="from-pink-500 to-rose-500"
+              bgColor="bg-[#9e2a2b]"
               index={2}
             />
           </div>
@@ -264,10 +262,10 @@ const HomePage = () => {
       </section>
 
       {/* 3. How It Works Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-24 bg-gray-50 relative overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-10" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-10" />
+        <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#fff3b0]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-10" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#e09f3e]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-10" />
 
         <div className="container px-6 mx-auto text-center relative z-10 md:px-12">
           <motion.div
@@ -277,15 +275,15 @@ const HomePage = () => {
             transition={{ duration: 0.6 }}
             className="mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 rounded-full mb-4">
-              <Zap className="w-4 h-4 text-indigo-600" />
-              <span className="text-sm font-medium text-indigo-600">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#fff3b0]/50 rounded-full mb-4">
+              <Zap className="w-4 h-4 text-[#e09f3e]" />
+              <span className="text-sm font-medium text-[#335c67]">
                 Simple Process
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Start Swapping in{" "}
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-[#335c67]">
                 4 Easy Steps
               </span>
             </h2>
@@ -324,7 +322,7 @@ const HomePage = () => {
       </section>
 
       {/* 4. Featured Books Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-24 bg-white">
         <div className="container px-6 mx-auto md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -335,7 +333,7 @@ const HomePage = () => {
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Recently Added{" "}
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-[#e09f3e]">
                 Books
               </span>
             </h2>
@@ -367,7 +365,7 @@ const HomePage = () => {
       </section>
 
       {/* 5. Testimonials Section */}
-      <section className="py-24 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
+      <section className="py-24 bg-[#540b0e] relative overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-10 animate-blob" />
         <div className="absolute bottom-20 right-10 w-64 h-64 bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-10 animate-blob animation-delay-2000" />
@@ -401,9 +399,9 @@ const HomePage = () => {
       </section>
 
       {/* 6. Download App Section */}
-      <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+      <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-6 md:px-12">
-          <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-[3rem] overflow-hidden shadow-2xl">
+          <div className="bg-[#335c67] rounded-[3rem] overflow-hidden shadow-2xl">
             <div className="flex flex-col md:flex-row items-center p-8 md:p-16 gap-12">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -466,7 +464,7 @@ const HomePage = () => {
                     alt="Mobile App"
                     className="relative rounded-3xl shadow-2xl w-full max-w-md mx-auto"
                     onError={(e) => {
-                      e.target.src = "https://placehold.co/600x600/8b5cf6/ffffff?text=BookSwap+App";
+                      e.target.src = "https://placehold.co/600x600/335c67/ffffff?text=BookSwap+App";
                     }}
                   />
                 </div>
@@ -479,14 +477,16 @@ const HomePage = () => {
       {/* 7. Footer */}
       <footer className="bg-gray-900 text-gray-300 relative overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" />
+        <div className="absolute top-0 left-0 w-1/3 h-1 bg-[#335c67]" />
+        <div className="absolute top-0 left-1/3 w-1/3 h-1 bg-[#e09f3e]" />
+        <div className="absolute top-0 left-2/3 w-1/3 h-1 bg-[#9e2a2b]" />
 
         <div className="container px-6 py-16 mx-auto md:px-12 relative z-10">
           <div className="grid gap-12 md:grid-cols-4 mb-12">
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-[#335c67] rounded-xl flex items-center justify-center">
                   <span className="text-white text-xl font-bold">B</span>
                 </div>
                 <div>
@@ -547,7 +547,7 @@ const HomePage = () => {
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e09f3e] focus:border-transparent transition-all"
                 />
                 <Button size="sm" className="w-full">
                   Subscribe
@@ -572,7 +572,7 @@ const HomePage = () => {
                   key={index}
                   whileHover={{ scale: 1.2, y: -2 }}
                   href={href}
-                  className="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 transition-all duration-300"
+                  className="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-[#335c67] transition-all duration-300"
                 >
                   <Icon className="w-5 h-5" />
                 </motion.a>

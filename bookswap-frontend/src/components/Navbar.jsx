@@ -29,12 +29,12 @@ const Navbar = () => {
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
-              className="w-10 h-10 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg"
+              className="w-10 h-10 bg-[#335c67] rounded-xl flex items-center justify-center shadow-lg"
             >
               <BookOpen className="w-6 h-6 text-white" />
             </motion.div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="text-xl font-bold text-[#335c67]">
                 BookSwap
               </span>
               <span className="text-xs text-gray-500 -mt-1">Exchange & Explore</span>
@@ -48,7 +48,7 @@ const Navbar = () => {
                 {location.pathname !== "/explore" && (
                   <Link
                     to="/explore"
-                    className="text-gray-700 hover:text-indigo-600 font-medium px-4 py-2 rounded-xl hover:bg-indigo-50 transition-all duration-300"
+                    className="text-gray-700 hover:text-[#335c67] font-medium px-4 py-2 rounded-xl hover:bg-[#fff3b0]/30 transition-all duration-300"
                   >
                     Explore
                   </Link>
@@ -58,7 +58,7 @@ const Navbar = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:shadow-indigo-500/50 transition-all duration-300"
+                      className="px-5 py-2.5 bg-[#e09f3e] hover:bg-[#9e2a2b] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       My Books
                     </motion.button>
@@ -66,12 +66,12 @@ const Navbar = () => {
                 )}
                 {location.pathname === "/" && (
                   <div className="flex items-center gap-2 ml-2">
-                    <Sparkles className="w-4 h-4 text-indigo-600" />
+                    <Sparkles className="w-4 h-4 text-[#e09f3e]" />
                     <span className="text-gray-700 font-medium">
                       Welcome,{" "}
                       <Link
                         to="/profile"
-                        className="text-indigo-600 font-bold hover:underline"
+                        className="text-[#335c67] font-bold hover:underline"
                       >
                         {currentUser.name.split(" ")[0]}
                       </Link>
@@ -98,7 +98,7 @@ const Navbar = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:shadow-indigo-500/50 transition-all duration-300"
+                      className="px-5 py-2.5 bg-[#e09f3e] hover:bg-[#9e2a2b] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       Sign Up
                     </motion.button>
@@ -139,7 +139,7 @@ const Navbar = () => {
                       <Link
                         to="/explore"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-gray-700 hover:text-indigo-600 font-medium px-4 py-3 rounded-xl hover:bg-indigo-50 transition-all"
+                        className="text-gray-700 hover:text-[#335c67] font-medium px-4 py-3 rounded-xl hover:bg-[#fff3b0]/30 transition-all"
                       >
                         Explore
                       </Link>
@@ -148,7 +148,7 @@ const Navbar = () => {
                       <Link
                         to="/dashboard"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl text-center"
+                        className="px-4 py-3 bg-[#e09f3e] hover:bg-[#9e2a2b] text-white font-semibold rounded-xl text-center transition-colors"
                       >
                         My Books
                       </Link>
@@ -156,7 +156,7 @@ const Navbar = () => {
                     <Link
                       to="/profile"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-gray-700 hover:text-indigo-600 font-medium px-4 py-3 rounded-xl hover:bg-indigo-50 transition-all"
+                      className="text-gray-700 hover:text-[#335c67] font-medium px-4 py-3 rounded-xl hover:bg-[#fff3b0]/30 transition-all"
                     >
                       Profile ({currentUser.name.split(" ")[0]})
                     </Link>
@@ -167,7 +167,7 @@ const Navbar = () => {
                       <Link
                         to="/login"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-gray-700 hover:text-indigo-600 font-medium px-4 py-3 rounded-xl hover:bg-indigo-50 transition-all"
+                        className="text-gray-700 hover:text-[#335c67] font-medium px-4 py-3 rounded-xl hover:bg-[#fff3b0]/30 transition-all"
                       >
                         Login
                       </Link>
@@ -176,7 +176,7 @@ const Navbar = () => {
                       <Link
                         to="/signup"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl text-center"
+                        className="px-4 py-3 bg-[#e09f3e] hover:bg-[#9e2a2b] text-white font-semibold rounded-xl text-center transition-colors"
                       >
                         Sign Up
                       </Link>

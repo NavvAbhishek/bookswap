@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* Custom Color Palette */
+:root {
+  --dark-slate-grey: #335c67;
+  --vanilla-custard: #fff3b0;
+  --honey-bronze: #e09f3e;
+  --brown-red: #9e2a2b;
+  --night-bordeaux: #540b0e;
+}
+
 /* Custom animations for 2026 design */
 @keyframes blob {
   0%, 100% {
@@ -40,15 +49,28 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #4f46e5, #9333ea, #ec4899);
+  background: linear-gradient(to bottom, var(--dark-slate-grey), var(--honey-bronze), var(--brown-red));
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #4338ca, #7e22ce, #db2777);
+  background: linear-gradient(to bottom, var(--night-bordeaux), var(--brown-red), var(--honey-bronze));
 }
 
 /* Prevent horizontal scroll */
 body {
   overflow-x: hidden;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-brand {
+  background: linear-gradient(135deg, var(--dark-slate-grey) 0%, var(--honey-bronze) 100%);
+}
+
+.bg-gradient-warm {
+  background: linear-gradient(135deg, var(--honey-bronze) 0%, var(--brown-red) 100%);
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(135deg, var(--night-bordeaux) 0%, var(--brown-red) 100%);
 }

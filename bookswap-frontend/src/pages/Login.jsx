@@ -45,11 +45,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 relative overflow-hidden">
+    <div className="min-h-screen bg-[#fff3b0]/20 relative overflow-hidden">
       {/* Animated Background Blobs */}
-      <div className="absolute top-20 left-10 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-      <div className="absolute top-40 right-10 w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-      <div className="absolute bottom-20 left-1/2 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+      <div className="absolute top-20 left-10 w-96 h-96 bg-[#e09f3e]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+      <div className="absolute top-40 right-10 w-96 h-96 bg-[#335c67]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+      <div className="absolute bottom-20 left-1/2 w-96 h-96 bg-[#9e2a2b]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
 
       <Navbar />
 
@@ -69,14 +69,14 @@ const Login = () => {
                 transition={{ delay: 0.3 }}
                 className="relative"
               >
-                <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-30 animate-pulse" />
-                <div className="relative bg-white/10 backdrop-blur-xl rounded-3xl p-12 border border-white/20">
+                <div className="absolute -inset-4 bg-[#e09f3e] rounded-3xl blur-2xl opacity-20 animate-pulse" />
+                <div className="relative bg-white/10 backdrop-blur-xl rounded-3xl p-12 border border-gray-200">
                   <div className="flex items-center gap-3 mb-8">
-                    <div className="w-16 h-16 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
+                    <div className="w-16 h-16 bg-[#335c67] rounded-2xl flex items-center justify-center shadow-xl">
                       <BookOpen className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      <h3 className="text-3xl font-bold text-[#335c67]">
                         BookSwap
                       </h3>
                       <p className="text-gray-600">Exchange & Explore</p>
@@ -92,9 +92,9 @@ const Login = () => {
 
                   <div className="space-y-4">
                     {[
-                      { icon: Sparkles, text: "Discover new books nearby" },
-                      { icon: BookOpen, text: "Manage your book collection" },
-                      { icon: Sparkles, text: "Connect with readers" },
+                      { icon: Sparkles, text: "Discover new books nearby", color: "bg-[#e09f3e]" },
+                      { icon: BookOpen, text: "Manage your book collection", color: "bg-[#335c67]" },
+                      { icon: Sparkles, text: "Connect with readers", color: "bg-[#9e2a2b]" },
                     ].map((item, index) => (
                       <motion.div
                         key={index}
@@ -103,8 +103,8 @@ const Login = () => {
                         transition={{ delay: 0.5 + index * 0.1 }}
                         className="flex items-center gap-3"
                       >
-                        <div className="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center">
-                          <item.icon className="w-5 h-5 text-indigo-600" />
+                        <div className={`w-10 h-10 ${item.color} rounded-xl flex items-center justify-center`}>
+                          <item.icon className="w-5 h-5 text-white" />
                         </div>
                         <span className="text-gray-700">{item.text}</span>
                       </motion.div>
@@ -127,11 +127,9 @@ const Login = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-4xl md:text-5xl font-extrabold mb-4"
+                className="text-4xl md:text-5xl font-extrabold mb-4 text-[#335c67]"
               >
-                <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Sign In
-                </span>
+                Sign In
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -151,9 +149,9 @@ const Login = () => {
               className="relative"
             >
               {/* Glow Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-lg opacity-20" />
+              <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-10" />
 
-              <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 border border-white/20">
+              <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 border border-gray-200">
                 <form onSubmit={handleLogin} className="space-y-6">
                   {/* Email Input */}
                   <Input
@@ -188,7 +186,7 @@ const Login = () => {
                         id="remember-me"
                         name="remember-me"
                         type="checkbox"
-                        className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer"
+                        className="w-4 h-4 text-[#335c67] border-gray-300 rounded focus:ring-[#335c67] cursor-pointer"
                       />
                       <span className="text-gray-700 group-hover:text-gray-900">
                         Remember me
@@ -197,7 +195,7 @@ const Login = () => {
 
                     <a
                       href="#"
-                      className="font-medium bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700"
+                      className="font-medium text-[#335c67] hover:text-[#e09f3e]"
                     >
                       Forgot password?
                     </a>
@@ -233,7 +231,7 @@ const Login = () => {
                       Don't have an account?{' '}
                       <Link
                         to="/signup"
-                        className="font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700"
+                        className="font-semibold text-[#335c67] hover:text-[#e09f3e]"
                       >
                         Create account
                       </Link>

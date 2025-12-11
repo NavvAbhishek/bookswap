@@ -13,7 +13,7 @@ const TestimonialCard = ({ testimonial, index }) => {
       <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 rounded-3xl blur-xl" />
 
       <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 hover:bg-white/20 transition-all duration-300">
-        <Quote className="w-10 h-10 text-white/60 mb-4" />
+        <Quote className="w-10 h-10 text-[#fff3b0]/80 mb-4" />
 
         <p className="text-white/90 text-lg mb-6 leading-relaxed italic">
           "{testimonial.quote}"
