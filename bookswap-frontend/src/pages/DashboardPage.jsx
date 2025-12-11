@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import BookService from "../services/book.service";
 import SwapRequestService from "../services/swap-request.service";
 import LocationPicker from "../components/LocationPicker";
 import {
-  PlusIcon,
-  PencilIcon,
-  TrashIcon,
-  XMarkIcon,
-  CheckIcon,
-  ClockIcon,
-  XCircleIcon,
-  CheckCircleIcon,
-} from "@heroicons/react/24/outline";
+  Plus,
+  Edit,
+  Trash2,
+  X,
+  Check,
+  Clock,
+  XCircle,
+  CheckCircle,
+} from "lucide-react";
 import Navbar from "../components/Navbar";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
 
 const defaultLocation = { lat: 6.8411, lng: 79.923 };
 
@@ -49,7 +52,6 @@ const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
       });
       setPreview(initialData.photoUrl);
     } else {
-      // Reset form for adding a new book
       setFormData({
         title: "",
         author: "",
@@ -95,180 +97,199 @@ const BookFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between pb-4 border-b">
-          <h3 className="text-2xl font-semibold">
-            {initialData ? "Edit Book" : "Add a New Book"}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-200"
-          >
-            <XMarkIcon className="w-6 h-6" />
-          </button>
-        </div>
-        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-          {/* Form fields will go here */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <input
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Title"
-              required
-              className="w-full p-2 border rounded"
-            />
-            <input
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-              placeholder="Author"
-              required
-              className="w-full p-2 border rounded"
-            />
-            <input
-              name="genre"
-              value={formData.genre}
-              onChange={handleChange}
-              placeholder="Genre"
-              required
-              className="w-full p-2 border rounded"
-            />
-            <input
-              name="language"
-              value={formData.language}
-              onChange={handleChange}
-              placeholder="Language"
-              required
-              className="w-full p-2 border rounded"
-            />
-            <select
-              name="bookCondition"
-              value={formData.bookCondition}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            >
-              <option value="NEW">New</option>
-              <option value="LIKE_NEW">Like New</option>
-              <option value="GOOD">Good</option>
-              <option value="FAIR">Fair</option>
-              <option value="POOR">Poor</option>
-            </select>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            >
-              <option value="AVAILABLE">Available</option>
-              <option value="LENT_OUT">Lent Out</option>
-            </select>
-          </div>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Description"
-            className="w-full p-2 border rounded"
-            rows="3"
-          ></textarea>
-          <input
-            name="exchangePreference"
-            value={formData.exchangePreference}
-            onChange={handleChange}
-            placeholder="Exchange Preference (e.g., Swap only)"
-            className="w-full p-2 border rounded"
-          />
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Book Location
-            </label>
-            <p className="text-xs text-gray-500 mb-2">
-              Search for a place or drag the pin to set the pickup location.
-            </p>
-            <LocationPicker
-              onLocationChange={handleLocationChange}
-              initialPosition={{
-                lat: formData.latitude,
-                lng: formData.longitude,
-              }}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Book Photo
-            </label>
-            <div className="flex items-center mt-1 space-x-4">
-              {preview && (
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="object-cover w-20 h-20 rounded"
-                />
-              )}
-              <input
-                type="file"
-                onChange={handleFileChange}
-                accept="image/*"
-                className="text-sm"
-              />
-            </div>
-          </div>
-          <div className="flex justify-end pt-4 space-x-2 border-t">
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      >
+        <motion.div
+          initial={{ scale: 0.9, y: 20 }}
+          animate={{ scale: 1, y: 0 }}
+          exit={{ scale: 0.9, y: 20 }}
+          className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto"
+        >
+          <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-3xl flex items-center justify-between">
+            <h3 className="text-2xl font-bold text-[#335c67]">
+              {initialData ? "Edit Book" : "Add a New Book"}
+            </h3>
             <button
-              type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700"
-            >
-              {initialData ? "Save Changes" : "Add Book"}
+              <X className="w-6 h-6" />
             </button>
           </div>
-        </form>
-      </div>
-    </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Title"
+                required
+              />
+              <Input
+                name="author"
+                value={formData.author}
+                onChange={handleChange}
+                placeholder="Author"
+                required
+              />
+              <Input
+                name="genre"
+                value={formData.genre}
+                onChange={handleChange}
+                placeholder="Genre"
+                required
+              />
+              <Input
+                name="language"
+                value={formData.language}
+                onChange={handleChange}
+                placeholder="Language"
+                required
+              />
+              <select
+                name="bookCondition"
+                value={formData.bookCondition}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#335c67]/50 focus:border-[#335c67]"
+              >
+                <option value="NEW">New</option>
+                <option value="LIKE_NEW">Like New</option>
+                <option value="GOOD">Good</option>
+                <option value="FAIR">Fair</option>
+                <option value="POOR">Poor</option>
+              </select>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#335c67]/50 focus:border-[#335c67]"
+              >
+                <option value="AVAILABLE">Available</option>
+                <option value="LENT_OUT">Lent Out</option>
+              </select>
+            </div>
+
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Description"
+              className="w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#335c67]/50 focus:border-[#335c67]"
+              rows="3"
+            ></textarea>
+
+            <Input
+              name="exchangePreference"
+              value={formData.exchangePreference}
+              onChange={handleChange}
+              placeholder="Exchange Preference (e.g., Swap only)"
+            />
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Book Location
+              </label>
+              <p className="text-xs text-gray-500 mb-2">
+                Search for a place or drag the pin to set the pickup location.
+              </p>
+              <div className="rounded-2xl overflow-hidden border-2 border-gray-200">
+                <LocationPicker
+                  onLocationChange={handleLocationChange}
+                  initialPosition={{
+                    lat: formData.latitude,
+                    lng: formData.longitude,
+                  }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Book Photo
+              </label>
+              <div className="flex items-center gap-4">
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="object-cover w-20 h-20 rounded-xl"
+                  />
+                )}
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#335c67] file:text-white hover:file:bg-[#540b0e] file:cursor-pointer"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4 gap-3 border-t border-gray-200">
+              <Button
+                type="button"
+                onClick={onClose}
+                variant="ghost"
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {initialData ? "Save Changes" : "Add Book"}
+              </Button>
+            </div>
+          </form>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
 // --- Reusable Delete Confirmation Modal ---
 const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-xl">
-        <h3 className="text-lg font-semibold">Are you sure?</h3>
-        <p className="mt-2 text-sm text-gray-600">
-          This action cannot be undone. You will permanently delete this book
-          listing.
-        </p>
-        <div className="flex justify-end mt-6 space-x-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      >
+        <motion.div
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0.9 }}
+          className="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6"
+        >
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Are you sure?</h3>
+          <p className="text-sm text-gray-600 mb-6">
+            This action cannot be undone. You will permanently delete this book listing.
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button onClick={onClose} variant="ghost">
+              Cancel
+            </Button>
+            <Button
+              onClick={onConfirm}
+              className="bg-[#9e2a2b] hover:bg-[#540b0e]"
+            >
+              Delete
+            </Button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
 // --- Main Dashboard Page Component ---
 const DashboardPage = () => {
-  //const [books, setBooks] = useState([]);
   const [myBooks, setMyBooks] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
@@ -295,7 +316,7 @@ const DashboardPage = () => {
         setLoading({ books: false, requests: false });
       })
       .catch((err) => {
-        setError("Failed to fetch dashboard data.",err);
+        setError("Failed to fetch dashboard data.", err);
         setLoading({ books: false, requests: false });
       });
   }, []);
@@ -307,7 +328,7 @@ const DashboardPage = () => {
   const handleUpdateRequest = (requestId, status) => {
     SwapRequestService.updateRequestStatus(requestId, status)
       .then(() => {
-        fetchDashboardData(); // Refresh all data after an update
+        fetchDashboardData();
         alert(`Request has been ${status.toLowerCase()}.`);
       })
       .catch(() => alert("Failed to update request."));
@@ -325,24 +346,6 @@ const DashboardPage = () => {
     });
     return map;
   }, [incomingRequests]);
-
-  /* const fetchMyBooks = useCallback(() => {
-    setLoading(true);
-    BookService.getMyBooks().then(
-      (response) => {
-        setBooks(response.data);
-        setLoading(false);
-      },
-      (error) => {
-        setError("Failed to fetch your books.", error);
-        setLoading(false);
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    fetchMyBooks();
-  }, [fetchMyBooks]); */
 
   const handleOpenAddModal = () => {
     setEditingBook(null);
@@ -376,8 +379,7 @@ const DashboardPage = () => {
       }
 
       await BookService.addBook(bookData);
-
-      //fetchMyBooks();
+      fetchDashboardData();
       handleCloseModals();
     } catch (err) {
       console.error("Failed to save book:", err);
@@ -392,7 +394,7 @@ const DashboardPage = () => {
     if (deletingBookId) {
       BookService.deleteBook(deletingBookId)
         .then(() => {
-          //fetchMyBooks(); // Refresh the list
+          fetchDashboardData();
           handleCloseModals();
         })
         .catch((err) => {
@@ -404,192 +406,219 @@ const DashboardPage = () => {
 
   return (
     <>
-    <Navbar/>
-      <div className="min-h-screen bg-gray-100">
-        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-              My Books Dashboard
-            </h1>
-            <button
+      <Navbar />
+      <div className="min-h-screen bg-[#fff3b0]/20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center justify-between mb-8"
+          >
+            <div>
+              <h1 className="text-4xl font-bold text-[#335c67]">
+                My Dashboard
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Manage your books and swap requests
+              </p>
+            </div>
+            <Button
               onClick={handleOpenAddModal}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700"
+              size="lg"
+              className="flex items-center gap-2"
             >
-              <PlusIcon className="w-5 h-5 mr-2" />
+              <Plus className="w-5 h-5" />
               Add New Book
-            </button>
-          </div>
+            </Button>
+          </motion.div>
 
-          {/* --- 1. MY BOOKS LISTING (OWNER'S VIEW) --- */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          {/* My Books Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
               My Book Listings
             </h2>
-            <div className="overflow-hidden bg-white shadow sm:rounded-md">
-              <ul role="list" className="divide-y divide-gray-200">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-10"></div>
+              <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
                 {loading.books && (
-                  <li>
-                    <p className="p-4 text-center">Loading...</p>
-                  </li>
+                  <div className="p-8 text-center">
+                    <div className="w-12 h-12 border-4 border-[#e09f3e] border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  </div>
                 )}
+
                 {!loading.books && myBooks.length === 0 && (
-                  <li>
-                    <p className="p-8 text-center">
-                      You haven't added any books yet.
-                    </p>
-                  </li>
+                  <div className="p-12 text-center">
+                    <p className="text-gray-600">You haven't added any books yet.</p>
+                  </div>
                 )}
-                {myBooks.map((book) => {
-                  const requestsForThisBook =
-                    incomingRequestsMap.get(book.id) || [];
+
+                {myBooks.map((book, index) => {
+                  const requestsForThisBook = incomingRequestsMap.get(book.id) || [];
                   return (
-                    <li key={book.id} className="p-4">
-                      <div className="flex items-center space-x-4">
-                        {/* Book Info */}
+                    <motion.div
+                      key={book.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="p-6 border-b border-gray-200 last:border-0 hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-center gap-4">
                         <img
-                          className="object-cover w-16 h-20 rounded"
+                          className="object-cover w-20 h-28 rounded-xl shadow-md"
                           src={book.photoUrl}
                           alt={book.title}
                         />
                         <div className="flex-grow">
-                          <p className="font-semibold">{book.title}</p>
-                          <p className="text-sm text-gray-500">{book.author}</p>
+                          <h3 className="font-bold text-lg text-gray-900">{book.title}</h3>
+                          <p className="text-sm text-gray-600">{book.author}</p>
                           <span
-                            className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                            className={`inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full ${
                               book.status === "AVAILABLE"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-yellow-100 text-yellow-800"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-yellow-100 text-yellow-700"
                             }`}
                           >
                             {book.status}
                           </span>
                         </div>
-                        {/* Action Buttons */}
-                        <div className="flex items-center space-x-2">
+
+                        <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleOpenEditModal(book)}
-                            className="p-2 text-gray-500 rounded-full hover:bg-gray-100 hover:text-gray-700"
+                            className="p-2 text-[#335c67] rounded-xl hover:bg-[#fff3b0]/30 transition-colors"
                           >
-                            <PencilIcon className="w-5 h-5" />
+                            <Edit className="w-5 h-5" />
                           </button>
                           <button
                             onClick={() => handleOpenDeleteModal(book.id)}
-                            className="p-2 text-red-500 rounded-full hover:bg-red-100 hover:text-red-700"
+                            className="p-2 text-[#9e2a2b] rounded-xl hover:bg-red-50 transition-colors"
                           >
-                            <TrashIcon className="w-5 h-5" />
+                            <Trash2 className="w-5 h-5" />
                           </button>
                         </div>
                       </div>
-                      {/* Incoming Requests for this book */}
+
                       {requestsForThisBook.length > 0 && (
-                        <div className="mt-4 pl-20">
-                          <h4 className="text-sm font-semibold text-gray-600">
+                        <div className="mt-4 pl-24">
+                          <h4 className="text-sm font-semibold text-gray-700 mb-3">
                             Pending Requests:
                           </h4>
-                          <ul className="mt-2 space-y-2">
+                          <div className="space-y-2">
                             {requestsForThisBook.map((req) => (
-                              <li
+                              <div
                                 key={req.id}
-                                className="flex items-center justify-between p-2 bg-gray-50 rounded-md"
+                                className="flex items-center justify-between p-3 bg-[#fff3b0]/20 rounded-xl"
                               >
-                                <p className="text-sm">
+                                <p className="text-sm text-gray-700">
                                   Request from{" "}
-                                  <span className="font-medium">
+                                  <span className="font-semibold text-[#335c67]">
                                     {req.requesterName}
                                   </span>
                                 </p>
-                                <div className="flex space-x-2">
+                                <div className="flex gap-2">
                                   <button
-                                    onClick={() =>
-                                      handleUpdateRequest(req.id, "ACCEPTED")
-                                    }
-                                    className="p-1.5 bg-green-100 text-green-600 rounded-full hover:bg-green-200"
+                                    onClick={() => handleUpdateRequest(req.id, "ACCEPTED")}
+                                    className="p-2 bg-green-100 text-green-600 rounded-xl hover:bg-green-200 transition-colors"
                                   >
-                                    <CheckIcon className="w-4 h-4" />
+                                    <Check className="w-4 h-4" />
                                   </button>
                                   <button
-                                    onClick={() =>
-                                      handleUpdateRequest(req.id, "DECLINED")
-                                    }
-                                    className="p-1.5 bg-red-100 text-red-600 rounded-full hover:bg-red-200"
+                                    onClick={() => handleUpdateRequest(req.id, "DECLINED")}
+                                    className="p-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition-colors"
                                   >
-                                    <XMarkIcon className="w-4 h-4" />
+                                    <X className="w-4 h-4" />
                                   </button>
                                 </div>
-                              </li>
+                              </div>
                             ))}
-                          </ul>
+                          </div>
                         </div>
                       )}
-                    </li>
+                    </motion.div>
                   );
                 })}
-              </ul>
+              </div>
             </div>
-          </div>
-          {/* --- 2. REQUESTED BOOKS (REQUESTER'S VIEW) --- */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          </motion.div>
+
+          {/* My Swap Requests Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
               My Swap Requests
             </h2>
-            <div className="overflow-hidden bg-white shadow sm:rounded-md">
-              <ul role="list" className="divide-y divide-gray-200">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-[#335c67] rounded-3xl blur-lg opacity-10"></div>
+              <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
                 {loading.requests && (
-                  <li>
-                    <p className="p-4 text-center">Loading...</p>
-                  </li>
+                  <div className="p-8 text-center">
+                    <div className="w-12 h-12 border-4 border-[#335c67] border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  </div>
                 )}
+
                 {!loading.requests && outgoingRequests.length === 0 && (
-                  <li>
-                    <p className="p-8 text-center">
-                      You haven't requested any books.
-                    </p>
-                  </li>
+                  <div className="p-12 text-center">
+                    <p className="text-gray-600">You haven't requested any books.</p>
+                  </div>
                 )}
-                {outgoingRequests.map((req) => (
-                  <li key={req.id} className="p-4">
-                    <div className="flex items-center space-x-4">
+
+                {outgoingRequests.map((req, index) => (
+                  <motion.div
+                    key={req.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="p-6 border-b border-gray-200 last:border-0 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
                       <img
-                        className="object-cover w-16 h-20 rounded"
+                        className="object-cover w-20 h-28 rounded-xl shadow-md"
                         src={req.book.photoUrl}
                         alt={req.book.title}
                       />
                       <div className="flex-grow">
-                        <p className="font-semibold">{req.book.title}</p>
-                        <p className="text-sm text-gray-500">
-                          by {req.book.author}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          Owner: {req.ownerName}
+                        <h3 className="font-bold text-lg text-gray-900">{req.book.title}</h3>
+                        <p className="text-sm text-gray-600">by {req.book.author}</p>
+                        <p className="text-sm text-gray-500 mt-1">
+                          Owner: <span className="font-medium">{req.ownerName}</span>
                         </p>
                       </div>
-                      {/* Status Badge */}
-                      <div className="flex items-center text-sm font-medium">
+
+                      <div className="flex items-center gap-2 text-sm font-semibold">
                         {req.status === "PENDING" && (
                           <>
-                            <ClockIcon className="w-5 h-5 mr-1.5 text-yellow-500" />
+                            <Clock className="w-5 h-5 text-yellow-500" />
                             <span className="text-yellow-600">Pending</span>
                           </>
                         )}
                         {req.status === "ACCEPTED" && (
                           <>
-                            <CheckCircleIcon className="w-5 h-5 mr-1.5 text-green-500" />
+                            <CheckCircle className="w-5 h-5 text-green-500" />
                             <span className="text-green-600">Accepted</span>
                           </>
                         )}
                         {req.status === "DECLINED" && (
                           <>
-                            <XCircleIcon className="w-5 h-5 mr-1.5 text-red-500" />
+                            <XCircle className="w-5 h-5 text-red-500" />
                             <span className="text-red-600">Declined</span>
                           </>
                         )}
                       </div>
                     </div>
-                  </li>
+                  </motion.div>
                 ))}
-              </ul>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 

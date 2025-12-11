@@ -1,87 +1,135 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import BookService from "../services/book.service";
 import SwapRequestService from "../services/swap-request.service";
 import {
-  MapPinIcon,
-  ArrowTopRightOnSquareIcon,
-} from "@heroicons/react/24/solid";
+  MapPin,
+  ExternalLink,
+  User,
+  Search,
+  Filter,
+  BookOpen,
+  Check,
+} from "lucide-react";
 import Navbar from "../components/Navbar";
+import Button from "../components/ui/Button";
 
 // --- Reusable Book Card Component for the Explore Page ---
-const BookCard = ({ book, onRequestSwap, isRequested }) => {
+const BookCard = ({ book, onRequestSwap, isRequested, index }) => {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${book.latitude},${book.longitude}`;
 
   const formatDistance = (distance) => {
     if (distance < 1) {
-      return "Less than 1 km";
+      return "< 1 km";
     }
-    // Round to one decimal place
-    return `${distance.toFixed(1)} km away`;
+    return `${distance.toFixed(1)} km`;
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-xl w-full">
-      <div className="flex flex-row p-4">
-        <img
-          className="object-cover w-auto h-44 rounded-md flex-shrink-0"
-          src={book.photoUrl}
-          alt={book.title}
-        />
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      className="group relative"
+    >
+      {/* Glow effect */}
+      <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-0 group-hover:opacity-30 transition-all duration-500" />
 
-        <div className="ml-4 flex flex-col justify-between flex-1">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900">{book.title}</h3>
-            <p className="text-sm text-gray-600 mb-1">by {book.author}</p>
-            <span className="inline-block px-2 py-1 text-[10px] font-semibold text-indigo-800 bg-indigo-100 rounded-full mb-1">
-              {book.genre}
-            </span>
+      <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-200">
+        {/* Book Image */}
+        <div className="relative h-64 overflow-hidden bg-gray-100">
+          <motion.img
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.6 }}
+            className="w-full h-full object-cover"
+            src={book.photoUrl}
+            alt={book.title}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Distance Badge */}
+          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#335c67] flex items-center gap-1 shadow-lg">
+            <MapPin className="w-3 h-3 text-[#e09f3e]" />
+            {formatDistance(book.distanceKm)}
           </div>
-          <div className="text-sm text-gray-700 mt-2">
-            Owner: <span className="font-medium">{book.ownerName}</span>
+
+          {/* Genre Badge */}
+          <div className="absolute top-4 left-4 bg-[#335c67]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg">
+            {book.genre}
           </div>
         </div>
-      </div>
-      <div className="px-4">
-        <p>{book.description}</p>
-      </div>
 
-      <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center text-gray-700 text-sm">
-          <MapPinIcon className="w-4 h-4 mr-1 text-red-500" />
-          <span>{book.locationName}</span>
+        {/* Content */}
+        <div className="p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-1 line-clamp-1">
+            {book.title}
+          </h3>
+          <p className="text-sm text-gray-600 mb-3">by {book.author}</p>
+
+          {/* Description */}
+          {book.description && (
+            <p className="text-sm text-gray-700 line-clamp-2 mb-4">
+              {book.description}
+            </p>
+          )}
+
+          {/* Owner Info */}
+          <div className="flex items-center gap-2 mb-4 pb-4 border-b border-gray-200">
+            <div className="w-8 h-8 rounded-full bg-[#fff3b0] flex items-center justify-center flex-shrink-0">
+              <User className="w-4 h-4 text-[#335c67]" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-gray-500">Owner</p>
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {book.ownerName}
+              </p>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 mb-4">
+            <div className="flex items-center gap-2 text-gray-700 min-w-0">
+              <MapPin className="w-4 h-4 text-[#e09f3e] flex-shrink-0" />
+              <span className="text-xs font-medium truncate">
+                {book.locationName}
+              </span>
+            </div>
+            <a
+              href={googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-[#335c67] hover:text-[#e09f3e] flex items-center gap-1 flex-shrink-0 ml-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Map
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+
+          {/* Request Button */}
+          <motion.button
+            whileHover={!isRequested ? { scale: 1.02 } : {}}
+            whileTap={!isRequested ? { scale: 0.98 } : {}}
+            onClick={() => onRequestSwap(book.id)}
+            disabled={isRequested}
+            className={`w-full font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 ${
+              isRequested
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "bg-[#e09f3e] hover:bg-[#9e2a2b] text-white shadow-md hover:shadow-lg"
+            }`}
+          >
+            {isRequested ? (
+              <>
+                <Check className="w-4 h-4" />
+                Requested
+              </>
+            ) : (
+              "Request Swap"
+            )}
+          </motion.button>
         </div>
-        <a
-          href={googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-800"
-        >
-          View on Map
-          <ArrowTopRightOnSquareIcon className="w-3 h-3 ml-1" />
-        </a>
       </div>
-      <div className="flex items-center mt-1 text-gray-500 text-sm px-4">
-        <p className="font-bold">
-          Distance:{" "}
-          <span className="font-normal">{formatDistance(book.distanceKm)}</span>
-        </p>
-      </div>
-
-      <div className="px-4 py-4">
-        <button
-          onClick={() => onRequestSwap(book.id)}
-          disabled={isRequested}
-          className={`w-full cursor-pointer px-4 py-2 mt-4 font-bold text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
-            isRequested
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
-          }`}
-        >
-          {isRequested ? "Requested" : "Request Swap"}{" "}
-          {/* <-- 4. Change text */}
-        </button>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -91,6 +139,8 @@ const ExplorePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [requestedBookIds, setRequestedBookIds] = useState(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -111,39 +161,86 @@ const ExplorePage = () => {
   const handleRequestSwap = (bookId) => {
     SwapRequestService.createRequest(bookId)
       .then(() => {
-        // Add the book ID to our set of requested IDs to update the UI
         setRequestedBookIds((prev) => new Set(prev).add(bookId));
-        alert("Swap request sent successfully!");
+        // Success feedback with modern styling
+        const successDiv = document.createElement("div");
+        successDiv.className =
+          "fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 animate-fade-in-down";
+        successDiv.textContent = "Swap request sent successfully!";
+        document.body.appendChild(successDiv);
+        setTimeout(() => successDiv.remove(), 3000);
       })
       .catch((err) => {
         const errorMsg =
           err.response?.data?.message || "Could not send swap request.";
-        alert(`Error: ${errorMsg}`);
+        const errorDiv = document.createElement("div");
+        errorDiv.className =
+          "fixed top-24 right-4 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 animate-fade-in-down";
+        errorDiv.textContent = `Error: ${errorMsg}`;
+        document.body.appendChild(errorDiv);
+        setTimeout(() => errorDiv.remove(), 3000);
       });
   };
+
+  const filteredBooks = books.filter((book) => {
+    const matchesSearch =
+      searchQuery === "" ||
+      book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesGenre =
+      selectedGenre === "" || book.genre === selectedGenre;
+    return matchesSearch && matchesGenre;
+  });
 
   const renderContent = () => {
     if (loading) {
       return (
-        <p className="py-10 text-center text-gray-500">Loading books...</p>
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="w-16 h-16 border-4 border-[#e09f3e] border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-gray-600">Loading books...</p>
+        </div>
       );
     }
     if (error) {
-      return <p className="py-10 text-center text-red-500">{error}</p>;
-    }
-    if (books.length === 0) {
       return (
-        <p className="py-10 text-center text-gray-500">
-          No books are available for swapping right now. Check back later!
-        </p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-20"
+        >
+          <div className="w-20 h-20 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-10 h-10 text-red-600" />
+          </div>
+          <p className="text-red-600 text-lg font-semibold">{error}</p>
+        </motion.div>
+      );
+    }
+    if (filteredBooks.length === 0) {
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-20"
+        >
+          <div className="w-20 h-20 bg-[#fff3b0] rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-10 h-10 text-[#335c67]" />
+          </div>
+          <p className="text-gray-600 text-lg mb-2">No books found</p>
+          <p className="text-gray-500 text-sm">
+            {searchQuery || selectedGenre
+              ? "Try adjusting your search filters"
+              : "Check back later for new books!"}
+          </p>
+        </motion.div>
       );
     }
     return (
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {books.map((book) => (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filteredBooks.map((book, index) => (
           <BookCard
             key={book.id}
             book={book}
+            index={index}
             onRequestSwap={handleRequestSwap}
             isRequested={requestedBookIds.has(book.id)}
           />
@@ -153,43 +250,112 @@ const ExplorePage = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#fff3b0]/20">
       <Navbar />
-      <div className="min-h-screen bg-gray-50">
-        <div className="container px-6 py-8 mx-auto md:px-12">
-          {/* Header and Filters */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">Explore Books</h1>
-            <p className="mt-2 text-lg text-gray-600">
-              Discover books from other readers in the network.
-            </p>
-          </div>
 
-          {/* Placeholder for Search and Filter bar */}
-          <div className="p-4 mb-8 bg-white rounded-lg shadow">
-            <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-              <input
-                type="text"
-                placeholder="Search by title or author..."
-                className="flex-grow p-2 border rounded-md"
-              />
-              <select className="p-2 border rounded-md">
-                <option>Filter by Genre</option>
-                <option>Fiction</option>
-                <option>Non-Fiction</option>
-                <option>Science Fiction</option>
-              </select>
-              <button className="px-6 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
-                Search
-              </button>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3">
+            Explore <span className="text-[#335c67]">Books</span>
+          </h1>
+          <p className="text-lg text-gray-600">
+            Discover books from readers in your network
+          </p>
+        </motion.div>
+
+        {/* Search and Filter Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="relative mb-8"
+        >
+          <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-20"></div>
+          <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-lg border border-gray-200 p-6">
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* Search Input */}
+              <div className="flex-1 relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search by title or author..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#335c67]/50 focus:border-[#335c67] outline-none transition-all"
+                />
+              </div>
+
+              {/* Genre Filter */}
+              <div className="relative lg:w-64">
+                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                <select
+                  value={selectedGenre}
+                  onChange={(e) => setSelectedGenre(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#335c67]/50 focus:border-[#335c67] outline-none appearance-none cursor-pointer transition-all"
+                >
+                  <option value="">All Genres</option>
+                  <option value="Fiction">Fiction</option>
+                  <option value="Non-Fiction">Non-Fiction</option>
+                  <option value="Science Fiction">Science Fiction</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Mystery">Mystery</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Biography">Biography</option>
+                  <option value="History">History</option>
+                  <option value="Self-Help">Self-Help</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              {/* Clear Filters Button */}
+              {(searchQuery || selectedGenre) && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedGenre("");
+                  }}
+                  className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-xl transition-all duration-300"
+                >
+                  Clear
+                </motion.button>
+              )}
             </div>
-          </div>
 
-          {/* Content Grid */}
-          {renderContent()}
-        </div>
+            {/* Results Count */}
+            {!loading && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-4 text-sm text-gray-600"
+              >
+                Showing {filteredBooks.length} of {books.length} books
+              </motion.p>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Content Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={filteredBooks.length}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </>
+    </div>
   );
 };
 

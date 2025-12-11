@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Menu, X, Sparkles } from "lucide-react";
+import { BookOpen, Menu, X, Sparkles, User } from "lucide-react";
 import { useState } from "react";
 import AuthService from "../services/auth.service";
 
@@ -48,20 +48,26 @@ const Navbar = () => {
                 {location.pathname !== "/explore" && (
                   <Link
                     to="/explore"
-                    className="text-gray-700 hover:text-[#335c67] font-medium px-4 py-2 rounded-xl hover:bg-[#fff3b0]/30 transition-all duration-300"
+                    className="text-gray-700 hover:text-white font-medium px-4 py-2 rounded-xl hover:bg-[#e09f3e] transition-all duration-300"
                   >
                     Explore
                   </Link>
                 )}
                 {location.pathname !== "/dashboard" && (
-                  <Link to="/dashboard">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-5 py-2.5 bg-[#e09f3e] hover:bg-[#9e2a2b] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      My Books
-                    </motion.button>
+                  <Link
+                    to="/dashboard"
+                    className="text-gray-700 hover:text-white font-medium px-4 py-2 rounded-xl hover:bg-[#e09f3e] transition-all duration-300"
+                  >
+                    My Books
+                  </Link>
+                )}
+                {location.pathname !== "/" && location.pathname !== "/profile" && (
+                  <Link
+                    to="/profile"
+                    className="text-gray-700 hover:text-white font-medium px-4 py-2 rounded-xl hover:bg-[#e09f3e] transition-all duration-300 flex items-center gap-2"
+                  >
+                    <User className="w-4 h-4" />
+                    Profile
                   </Link>
                 )}
                 {location.pathname === "/" && (
@@ -139,7 +145,7 @@ const Navbar = () => {
                       <Link
                         to="/explore"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-gray-700 hover:text-[#335c67] font-medium px-4 py-3 rounded-xl hover:bg-[#fff3b0]/30 transition-all"
+                        className="text-gray-700 hover:text-white font-medium px-4 py-3 rounded-xl hover:bg-[#e09f3e] transition-all"
                       >
                         Explore
                       </Link>
@@ -148,18 +154,21 @@ const Navbar = () => {
                       <Link
                         to="/dashboard"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="px-4 py-3 bg-[#e09f3e] hover:bg-[#9e2a2b] text-white font-semibold rounded-xl text-center transition-colors"
+                        className="text-gray-700 hover:text-white font-medium px-4 py-3 rounded-xl hover:bg-[#e09f3e] transition-all"
                       >
                         My Books
                       </Link>
                     )}
-                    <Link
-                      to="/profile"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-gray-700 hover:text-[#335c67] font-medium px-4 py-3 rounded-xl hover:bg-[#fff3b0]/30 transition-all"
-                    >
-                      Profile ({currentUser.name.split(" ")[0]})
-                    </Link>
+                    {location.pathname !== "/profile" && (
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-gray-700 hover:text-white font-medium px-4 py-3 rounded-xl hover:bg-[#e09f3e] transition-all flex items-center gap-2"
+                      >
+                        <User className="w-4 h-4" />
+                        Profile ({currentUser.name.split(" ")[0]})
+                      </Link>
+                    )}
                   </>
                 ) : (
                   <>
