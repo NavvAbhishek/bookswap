@@ -337,7 +337,7 @@ const DashboardPage = () => {
   const incomingRequestsMap = useMemo(() => {
     const map = new Map();
     incomingRequests.forEach((req) => {
-      if (req.book && req.status === "PENDING") {
+      if (req.book) {
         if (!map.has(req.book.id)) {
           map.set(req.book.id, []);
         }
@@ -507,7 +507,7 @@ const DashboardPage = () => {
                       {requestsForThisBook.length > 0 && (
                         <div className="mt-4 pl-24">
                           <h4 className="text-sm font-semibold text-gray-700 mb-3">
-                            Pending Requests:
+                            Swap Requests ({requestsForThisBook.length}):
                           </h4>
                           <div className="space-y-2">
                             {requestsForThisBook.map((req) => (
@@ -515,26 +515,48 @@ const DashboardPage = () => {
                                 key={req.id}
                                 className="flex items-center justify-between p-3 bg-[#fff3b0]/20 rounded-xl"
                               >
-                                <p className="text-sm text-gray-700">
-                                  Request from{" "}
-                                  <span className="font-semibold text-[#335c67]">
-                                    {req.requesterName}
-                                  </span>
-                                </p>
-                                <div className="flex gap-2">
-                                  <button
-                                    onClick={() => handleUpdateRequest(req.id, "ACCEPTED")}
-                                    className="p-2 bg-green-100 text-green-600 rounded-xl hover:bg-green-200 transition-colors"
-                                  >
-                                    <Check className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleUpdateRequest(req.id, "DECLINED")}
-                                    className="p-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition-colors"
-                                  >
-                                    <X className="w-4 h-4" />
-                                  </button>
+                                <div className="flex items-center gap-3">
+                                  <p className="text-sm text-gray-700">
+                                    Request from{" "}
+                                    <span className="font-semibold text-[#335c67]">
+                                      {req.requesterName}
+                                    </span>
+                                  </p>
+                                  {req.status === "ACCEPTED" && (
+                                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-700">
+                                      <CheckCircle className="w-3 h-3" />
+                                      Accepted
+                                    </span>
+                                  )}
+                                  {req.status === "DECLINED" && (
+                                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-red-100 text-red-700">
+                                      <XCircle className="w-3 h-3" />
+                                      Declined
+                                    </span>
+                                  )}
+                                  {req.status === "PENDING" && (
+                                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                                      <Clock className="w-3 h-3" />
+                                      Pending
+                                    </span>
+                                  )}
                                 </div>
+                                {req.status === "PENDING" && (
+                                  <div className="flex gap-2">
+                                    <button
+                                      onClick={() => handleUpdateRequest(req.id, "ACCEPTED")}
+                                      className="p-2 bg-green-100 text-green-600 rounded-xl hover:bg-green-200 transition-colors"
+                                    >
+                                      <Check className="w-4 h-4" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleUpdateRequest(req.id, "DECLINED")}
+                                      className="p-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition-colors"
+                                    >
+                                      <X className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>

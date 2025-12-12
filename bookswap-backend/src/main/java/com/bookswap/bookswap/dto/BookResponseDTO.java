@@ -27,4 +27,5 @@ public class BookResponseDTO {
     private LocalDateTime createdAt;
     private String locationName;
     private Double distanceKm;
+    private Long requestCount;
 }

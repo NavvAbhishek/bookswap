@@ -57,6 +57,14 @@ const BookCard = ({ book, onRequestSwap, isRequested, isRequesting, index }) => 
           <div className="absolute top-4 left-4 bg-[#335c67]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg">
             {book.genre}
           </div>
+
+          {/* Request Count Badge */}
+          {book.requestCount != null && book.requestCount > 0 && (
+            <div className="absolute bottom-4 left-4 bg-[#9e2a2b]/95 backdrop-blur-sm px-3 py-2 rounded-full text-xs font-bold text-white shadow-lg flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5" />
+              {book.requestCount} {book.requestCount === 1 ? 'request' : 'requests'}
+            </div>
+          )}
         </div>
 
         {/* Content */}
@@ -152,9 +160,28 @@ const ExplorePage = () => {
 
   useEffect(() => {
     setLoading(true);
-    BookService.getExploreBooks()
-      .then((response) => {
-        setBooks(response.data);
+    // Fetch both books and user's outgoing requests
+    Promise.all([
+      BookService.getExploreBooks(),
+      SwapRequestService.getOutgoingRequests()
+    ])
+      .then(([booksResponse, requestsResponse]) => {
+        setBooks(booksResponse.data);
+
+        // Debug: Log the first book to check requestCount
+        if (booksResponse.data.length > 0) {
+          console.log('Sample book data:', booksResponse.data[0]);
+          console.log('Request count:', booksResponse.data[0].requestCount);
+        }
+
+        // Initialize requestedBookIds with books already requested
+        const requestedIds = new Set(
+          requestsResponse.data
+            .filter(req => req.status === 'PENDING')
+            .map(req => req.book.id)
+        );
+        setRequestedBookIds(requestedIds);
+
         setLoading(false);
       })
       .catch((error) => {

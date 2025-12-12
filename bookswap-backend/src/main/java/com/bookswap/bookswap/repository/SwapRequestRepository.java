@@ -22,4 +22,7 @@ public interface SwapRequestRepository extends JpaRepository<SwapRequest, Long> 
 
     // Check if a specific user already has a pending request for a specific book
     Optional<SwapRequest> findByBookAndRequesterAndStatus(Book book, User requester, SwapRequestStatus status);
+
+    // Count pending requests for a specific book
+    Long countByBookAndStatus(Book book, SwapRequestStatus status);
 }

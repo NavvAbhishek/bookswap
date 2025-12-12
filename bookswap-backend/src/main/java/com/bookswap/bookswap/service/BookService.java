@@ -3,9 +3,11 @@ package com.bookswap.bookswap.service;
 import com.bookswap.bookswap.dto.BookRequestDTO;
 import com.bookswap.bookswap.dto.BookResponseDTO;
 import com.bookswap.bookswap.enums.BookStatus;
+import com.bookswap.bookswap.enums.SwapRequestStatus;
 import com.bookswap.bookswap.model.Book;
 import com.bookswap.bookswap.model.User;
 import com.bookswap.bookswap.repository.BookRepository;
+import com.bookswap.bookswap.repository.SwapRequestRepository;
 import com.bookswap.bookswap.util.HaversineUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final FileStorageService fileStorageService;
     private final GeocodingService geocodingService;
+    private final SwapRequestRepository swapRequestRepository;
 
     @Value("${book.photo.upload-dir}")
     private String bookPhotoUploadDir;
@@ -133,6 +136,9 @@ public class BookService {
             );
         }
 
+        // Count pending requests for this book
+        Long requestCount = swapRequestRepository.countByBookAndStatus(book, SwapRequestStatus.PENDING);
+
         return BookResponseDTO.builder()
                 .id(book.getId())
                 .title(book.getTitle())
@@ -151,6 +157,7 @@ public class BookService {
                 .createdAt(book.getCreatedAt())
                 .locationName(locationName)
                 .distanceKm(distance)
+                .requestCount(requestCount)
                 .build();
     }
 }
