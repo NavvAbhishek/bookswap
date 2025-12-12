@@ -168,12 +168,6 @@ const ExplorePage = () => {
       .then(([booksResponse, requestsResponse]) => {
         setBooks(booksResponse.data);
 
-        // Debug: Log the first book to check requestCount
-        if (booksResponse.data.length > 0) {
-          console.log('Sample book data:', booksResponse.data[0]);
-          console.log('Request count:', booksResponse.data[0].requestCount);
-        }
-
         // Initialize requestedBookIds with books already requested
         const requestedIds = new Set(
           requestsResponse.data

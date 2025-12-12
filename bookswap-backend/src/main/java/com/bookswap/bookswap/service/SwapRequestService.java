@@ -26,6 +26,7 @@ public class SwapRequestService {
     private final SwapRequestRepository swapRequestRepository;
     private final BookRepository bookRepository;
     private final BookService bookService;
+    private final NotificationService notificationService;
 
     public SwapRequestResponseDTO createSwapRequest(Long bookId, User requester) {
         Book book = bookRepository.findById(bookId)
@@ -48,7 +49,18 @@ public class SwapRequestService {
                 .status(SwapRequestStatus.PENDING)
                 .build();
 
-        return mapToSwapRequestResponseDTO(swapRequestRepository.save(swapRequest));
+        SwapRequest savedRequest = swapRequestRepository.save(swapRequest);
+
+        // Create notification for book owner
+        notificationService.createNotification(
+                book.getOwner().getId(),
+                "NEW_REQUEST",
+                requester.getName() + " requested your book '" + book.getTitle() + "'",
+                savedRequest.getId(),
+                book.getId()
+        );
+
+        return mapToSwapRequestResponseDTO(savedRequest);
     }
 
     public SwapRequestResponseDTO updateSwapRequestStatus(Long requestId, SwapRequestStatus newStatus, User currentUser) {
@@ -65,6 +77,24 @@ public class SwapRequestService {
             Book book = request.getBook();
             book.setStatus(BookStatus.LENT_OUT);
             bookRepository.save(book);
+
+            // Notify requester that their request was accepted
+            notificationService.createNotification(
+                    request.getRequester().getId(),
+                    "REQUEST_ACCEPTED",
+                    request.getOwner().getName() + " accepted your request for '" + request.getBook().getTitle() + "'",
+                    request.getId(),
+                    request.getBook().getId()
+            );
+        } else if (newStatus == SwapRequestStatus.DECLINED) {
+            // Notify requester that their request was declined
+            notificationService.createNotification(
+                    request.getRequester().getId(),
+                    "REQUEST_DECLINED",
+                    request.getOwner().getName() + " declined your request for '" + request.getBook().getTitle() + "'",
+                    request.getId(),
+                    request.getBook().getId()
+            );
         }
 
         request.setStatus(newStatus);
