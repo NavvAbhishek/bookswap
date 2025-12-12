@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import UserService from "../services/user.service";
+import BookService from "../services/book.service";
 import AuthService from "../services/auth.service";
 import {
   User,
@@ -17,17 +18,23 @@ import Button from "../components/ui/Button";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
+  const [myBooks, setMyBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    UserService.getProfile().then(
-      (response) => {
-        setProfile(response.data);
+    setLoading(true);
+    Promise.all([
+      UserService.getProfile(),
+      BookService.getMyBooks()
+    ])
+      .then(([profileResponse, booksResponse]) => {
+        setProfile(profileResponse.data);
+        setMyBooks(booksResponse.data);
         setLoading(false);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         setError("Failed to fetch profile data. You may need to log in again.");
         setLoading(false);
         if (
@@ -37,8 +44,7 @@ const ProfilePage = () => {
           AuthService.logout();
           navigate("/login");
         }
-      }
-    );
+      });
   }, [navigate]);
 
   const handleLogout = () => {
@@ -164,62 +170,110 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {[
-              { label: "Books Listed", value: "0", icon: BookOpen, color: "bg-[#e09f3e]" },
-              { label: "Swaps Made", value: "0", icon: BookOpen, color: "bg-[#335c67]" },
-              { label: "Active Requests", value: "0", icon: BookOpen, color: "bg-[#9e2a2b]" },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                className="relative group"
-              >
-                <div className={`absolute -inset-1 ${stat.color} rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-all duration-300`}></div>
-                <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-gray-200 hover:shadow-xl transition-all duration-300">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
-                      <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                    </div>
-                    <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center`}>
-                      <stat.icon className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
           {/* My Books Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="relative"
+            transition={{ delay: 0.3 }}
           >
-            <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-10"></div>
-            <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">My Books</h2>
-
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-[#fff3b0]/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <BookOpen className="w-10 h-10 text-[#335c67]" />
-                </div>
-                <p className="text-gray-600 mb-6">
-                  You haven't added any books yet.
-                </p>
-                <Button
-                  onClick={() => navigate("/dashboard")}
-                  size="lg"
-                >
-                  Add Your First Book
-                </Button>
-              </div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">
+                My Books ({myBooks.length})
+              </h2>
+              <Button
+                onClick={() => navigate("/dashboard")}
+                size="md"
+              >
+                Manage Books
+              </Button>
             </div>
+
+            {myBooks.length === 0 ? (
+              <div className="relative">
+                <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-10"></div>
+                <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200 p-12">
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-[#fff3b0]/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <BookOpen className="w-10 h-10 text-[#335c67]" />
+                    </div>
+                    <p className="text-gray-600 mb-6">
+                      You haven't added any books yet.
+                    </p>
+                    <Button
+                      onClick={() => navigate("/dashboard")}
+                      size="lg"
+                    >
+                      Add Your First Book
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {myBooks.map((book, index) => (
+                  <motion.div
+                    key={book.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    className="group relative"
+                  >
+                    {/* Glow effect */}
+                    <div className="absolute -inset-1 bg-[#e09f3e] rounded-3xl blur-lg opacity-0 group-hover:opacity-30 transition-all duration-500" />
+
+                    <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-200">
+                      {/* Book Image */}
+                      <div className="relative h-64 overflow-hidden bg-gray-100">
+                        <motion.img
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.6 }}
+                          className="w-full h-full object-cover"
+                          src={book.photoUrl}
+                          alt={book.title}
+                        />
+
+                        {/* Genre Badge */}
+                        <div className="absolute top-4 left-4 bg-[#335c67]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg">
+                          {book.genre}
+                        </div>
+
+                        {/* Status Badge */}
+                        <div className={`absolute top-4 right-4 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold shadow-lg ${
+                          book.status === "AVAILABLE"
+                            ? "bg-green-500/90 text-white"
+                            : "bg-yellow-500/90 text-white"
+                        }`}>
+                          {book.status}
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1 line-clamp-1">
+                          {book.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3">by {book.author}</p>
+
+                        {/* Description */}
+                        {book.description && (
+                          <p className="text-sm text-gray-700 line-clamp-2 mb-4">
+                            {book.description}
+                          </p>
+                        )}
+
+                        {/* Location */}
+                        <div className="flex items-center gap-2 text-gray-700 bg-gray-50 rounded-xl px-3 py-2">
+                          <MapPin className="w-4 h-4 text-[#e09f3e] flex-shrink-0" />
+                          <span className="text-xs font-medium truncate">
+                            {book.locationName}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </motion.div>
         </motion.div>
       </div>
