@@ -15,7 +15,7 @@ import Navbar from "../components/Navbar";
 import Button from "../components/ui/Button";
 
 // --- Reusable Book Card Component for the Explore Page ---
-const BookCard = ({ book, onRequestSwap, isRequested, index }) => {
+const BookCard = ({ book, onRequestSwap, isRequested, isRequesting, index }) => {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${book.latitude},${book.longitude}`;
 
   const formatDistance = (distance) => {
@@ -108,13 +108,15 @@ const BookCard = ({ book, onRequestSwap, isRequested, index }) => {
 
           {/* Request Button */}
           <motion.button
-            whileHover={!isRequested ? { scale: 1.02 } : {}}
-            whileTap={!isRequested ? { scale: 0.98 } : {}}
+            whileHover={!isRequested && !isRequesting ? { scale: 1.02 } : {}}
+            whileTap={!isRequested && !isRequesting ? { scale: 0.98 } : {}}
             onClick={() => onRequestSwap(book.id)}
-            disabled={isRequested}
+            disabled={isRequested || isRequesting}
             className={`w-full font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 ${
               isRequested
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : isRequesting
+                ? "bg-[#e09f3e]/70 text-white cursor-wait"
                 : "bg-[#e09f3e] hover:bg-[#9e2a2b] text-white shadow-md hover:shadow-lg"
             }`}
           >
@@ -122,6 +124,11 @@ const BookCard = ({ book, onRequestSwap, isRequested, index }) => {
               <>
                 <Check className="w-4 h-4" />
                 Requested
+              </>
+            ) : isRequesting ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Requesting...
               </>
             ) : (
               "Request Swap"
@@ -139,6 +146,7 @@ const ExplorePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [requestedBookIds, setRequestedBookIds] = useState(new Set());
+  const [requestingBookId, setRequestingBookId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
 
@@ -159,26 +167,14 @@ const ExplorePage = () => {
   }, []);
 
   const handleRequestSwap = (bookId) => {
+    setRequestingBookId(bookId);
     SwapRequestService.createRequest(bookId)
       .then(() => {
         setRequestedBookIds((prev) => new Set(prev).add(bookId));
-        // Success feedback with modern styling
-        const successDiv = document.createElement("div");
-        successDiv.className =
-          "fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 animate-fade-in-down";
-        successDiv.textContent = "Swap request sent successfully!";
-        document.body.appendChild(successDiv);
-        setTimeout(() => successDiv.remove(), 3000);
+        setRequestingBookId(null);
       })
       .catch((err) => {
-        const errorMsg =
-          err.response?.data?.message || "Could not send swap request.";
-        const errorDiv = document.createElement("div");
-        errorDiv.className =
-          "fixed top-24 right-4 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 animate-fade-in-down";
-        errorDiv.textContent = `Error: ${errorMsg}`;
-        document.body.appendChild(errorDiv);
-        setTimeout(() => errorDiv.remove(), 3000);
+        setRequestingBookId(null);
       });
   };
 
@@ -243,6 +239,7 @@ const ExplorePage = () => {
             index={index}
             onRequestSwap={handleRequestSwap}
             isRequested={requestedBookIds.has(book.id)}
+            isRequesting={requestingBookId === book.id}
           />
         ))}
       </div>
